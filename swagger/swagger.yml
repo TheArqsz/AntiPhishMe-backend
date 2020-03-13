@@ -1,0 +1,49 @@
+swagger: "2.0"
+info:
+  description: This is the swagger specs for this flask-api project
+  version: "0.0.1"
+  title: Flask Api
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api/v1
+
+# Paths supported by this application
+paths:
+  /check/domain:
+    post:
+      operationId: api.main.check_domain
+      tags:
+      - domain
+      summary: Checks domain's evilness 
+      description: When given a domain, checks if it is evil and returns proper response
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: domain
+          type: string
+          description: Full domain.
+      responses:
+        200:
+          description: Domain's details
+
+  /check/ip:
+    post:
+      operationId: api.main.check_ip
+      tags:
+      - ip
+      summary: Checks ip's evilness 
+      description: When given an ip, checks if it is evil and returns proper response
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: ip
+          type: string
+          description: Full ip.      
+      responses:
+        200:
+          description: IP's details

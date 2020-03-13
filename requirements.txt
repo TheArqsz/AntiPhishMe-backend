@@ -1,0 +1,10 @@
+connexion
+flask
+flask-sqlalchemy
+gunicorn
+jsonschema
+pipenv-to-requirements
+psycopg2-binary
+pytest<=4.*
+sqlalchemy
+swagger-ui-bundle
