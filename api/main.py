@@ -3,6 +3,15 @@ from flask import Response
 from models.user_model import *
 from models.location_model import *
 
+def check_domain(): 
+    response_text = '{ "message": "Database created." }'
+    response = Response(response_text, 200, mimetype='application/json')
+    return response
+
+
+def check_ip():
+    response = Response("ok", 200, mimetype='application/json')
+    return response
 
 def create_db():
     db.drop_all()
