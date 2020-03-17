@@ -4,7 +4,7 @@ EXPOSE 5000
 
 ENTRYPOINT ["gunicorn"]
 
-CMD ["--workers=4", "--bind=0.0.0.0:5000", "app:my_app"]
+CMD ["--workers=4", "--bind=0.0.0.0:5000", "app:connexion_app"]
 
 RUN mkdir /flask_api && \
     apk upgrade --update && \

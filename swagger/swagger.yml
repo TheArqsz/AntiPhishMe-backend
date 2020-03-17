@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: This is the swagger specs for this flask-api project
+  description: This is the swagger specs for phishing detection API project
   version: "0.0.1"
-  title: Flask Api
+  title: Phishing API backend
 consumes:
   - application/json
 produces:
@@ -16,7 +16,7 @@ paths:
     post:
       operationId: api.main.check_domain
       tags:
-      - domain
+      - checks
       summary: Checks domain's evilness 
       description: When given a domain, checks if it is evil and returns proper response
       consumes:
@@ -34,7 +34,7 @@ paths:
     post:
       operationId: api.main.check_ip
       tags:
-      - ip
+      - checks
       summary: Checks ip's evilness 
       description: When given an ip, checks if it is evil and returns proper response
       consumes:
@@ -47,3 +47,23 @@ paths:
       responses:
         200:
           description: IP's details
+
+  /remote/urlscan:
+    post:
+      operationId: api.remote.scan_urlscan
+      tags:
+      - remote
+      summary: Checks results from urlscan
+      description: When given an url, checks in urlscan if it is evil and returns proper response
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: ip
+          type: string
+          description: Full ip.      
+      responses:
+        200:
+          description: Scan details
+        400:
+          description: Wrong data

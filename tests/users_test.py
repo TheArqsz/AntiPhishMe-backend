@@ -3,12 +3,12 @@ import os
 import connexion
 import pytest
 
-from config import my_app
+from config import connexion_app
 from db_config import db
 
 flask_app = connexion.FlaskApp(__name__)
 # setting in memory database for testing
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(my_app.root_path, 'database/test.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(connexion_app.root_path, 'database/test.db')
 flask_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 flask_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(flask_app.app)

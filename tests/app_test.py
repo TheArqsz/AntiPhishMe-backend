@@ -2,7 +2,7 @@ import json
 import connexion
 import pytest
 
-from config import my_app
+from config import connexion_app
 
 flask_app = connexion.FlaskApp(__name__)
 flask_app.add_api('../swagger/swagger.yml')
