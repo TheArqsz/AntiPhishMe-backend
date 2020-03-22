@@ -5,3 +5,6 @@ from models.location_model import *
 
 def scan_urlscan():
     pass
+
+def scan_safebrowsing():
+    pass

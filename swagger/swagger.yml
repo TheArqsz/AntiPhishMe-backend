@@ -67,3 +67,23 @@ paths:
           description: Scan details
         400:
           description: Wrong data
+
+  /remote/safebrowsing:
+    post:
+      operationId: api.remote.scan_safebrowsing
+      tags:
+      - remote
+      summary: Checks results from Google SafeBrowsing API
+      description: When given an url, checks in SafeBrowsing if it is malicious and returns proper response
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: domain_or_ip
+          type: string
+          description: Full ip or domain.      
+      responses:
+        200:
+          description: Scan details
+        400:
+          description: Wrong data
