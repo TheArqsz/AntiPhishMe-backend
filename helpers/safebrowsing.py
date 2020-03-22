@@ -21,5 +21,3 @@ def lookup_url(url):
         raise SafeBrowsingException
     check_apikey()
     return s.lookup_urls([url])
-
-print(lookup_url('google'))
