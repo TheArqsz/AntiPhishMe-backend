@@ -18,6 +18,7 @@ class ApiKeyException(UrlscanException):
 
 def submit(url):
     global API_KEY
+    print(API_KEY)
     headers = {
         'Content-Type': 'application/json',
         'API-Key': API_KEY,
@@ -29,6 +30,7 @@ def submit(url):
     response = requests.post('https://urlscan.io/api/v1/scan/', headers=headers, data=json.dumps(data))
     
     r = response.json()
+    print(response.text)
     if r.get('message') and r.get('message') == "Submission successful":
         return r.get('uuid')
     else:
@@ -52,7 +54,8 @@ def search(url):
 def results(uuid):
     found = False
     duration = 0
-    while not found or duration > 24*60*60:
+    wait_time = 30
+    while not found and duration < wait_time:
         response = requests.get(f"https://urlscan.io/api/v1/result/{uuid}")
         null_response_string = '"status": 404'
         r = response.content.decode("utf-8")
@@ -63,9 +66,13 @@ def results(uuid):
         else:
             found = True
             logging.info(f"Results for {uuid} processed after {duration} sec.")
+            j = response.json()
             return summary(response.json())
+    return None
 
 def summary(content):
+    if content.get("data").get("requests")[0].get("response").get("failed"):
+        return None
     ### relevant aggregate data
     request_info = content.get("data").get("requests")
     meta_info = content.get("meta")

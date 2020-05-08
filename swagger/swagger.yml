@@ -31,8 +31,8 @@ paths:
           description: Domain's details
 
   /check/ip:
-    post:
-      operationId: api.main.check_ip
+    get:
+      operationId: api.verifier.verify
       tags:
       - checks
       summary: Checks ip's evilness 
