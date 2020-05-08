@@ -4,7 +4,7 @@ from helpers.phishverifier import *
 from flask import Response
 
 def verify(): 
-    verdict = verify_all("prezydent.gov.pl")
+    verdict = verify_all("weka.pwredu.pl")
     response_text = { 
         "result": f"{verdict}" 
         }

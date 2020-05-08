@@ -53,7 +53,7 @@ def verify_safebrowsing(URL):
 def verify_certsh(domain):
     crt_results = crtsh.get_results(domain) 
     if not crt_results:
-        return False
+        return True
     certs = Certs.get_all_certs()
     for c in certs:
         if crt_results.get('caid') == c.get('caid'):
@@ -117,7 +117,7 @@ def verify_all(URL):
         #     final_result += 30
 
         verdict = ''
-        if final_result <= 30:
+        if final_result < 30:
             verdict = 'good'
         elif final_result <= 70:
             verdict = 'suspicious'
