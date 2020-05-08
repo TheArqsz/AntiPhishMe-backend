@@ -116,7 +116,15 @@ def verify_all(URL):
         # if urlscan_result:
         #     final_result += 30
 
+        verdict = ''
+        if final_result <= 30:
+            verdict = 'good'
+        elif final_result <= 70:
+            verdict = 'suspicious'
+        else:
+            verdict = 'bad as hell'
+
         print('POINTS: ' + str(final_result))
         #TODO Add to baddies if malicious
-        return sf_result, str(final_result)
+        return verdict
 

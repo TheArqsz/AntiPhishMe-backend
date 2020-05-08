@@ -4,9 +4,9 @@ from helpers.phishverifier import *
 from flask import Response
 
 def verify(): 
-    is_mal, data = verify_all("enlace.santandrer.com.mx.tuservin.com")
+    verdict = verify_all("prezydent.gov.pl")
     response_text = { 
-        "message": f"{data}" 
+        "result": f"{verdict}" 
         }
     response = Response(json.dumps(response_text), 200, mimetype='application/json')
     return response
