@@ -4,7 +4,6 @@ import jsonschema
 from flask import jsonify, Response, request, json
 from datetime import datetime, timedelta, date
 from schemas.details_schema import *
-from info import ip, domain
 from messages.error_messages import error_message_helper
 
 from helpers import whois_helper, safebrowsing, crtsh, url_helper, urlscan
