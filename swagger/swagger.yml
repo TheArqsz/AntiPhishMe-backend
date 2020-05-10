@@ -56,17 +56,17 @@ paths:
         200:
           description: IP's details
 
-  /details/domain:
+  /details/ip_by_domain:
     post:
-      operationId: api.details.get_domain_details
+      operationId: api.details.get_ip_details_by_domain
       tags:
       - details
-      summary: Returns details for domain
-      description: When given a domain, returns it's details such as creation date or number of multiple dns
+      summary: Returns IP details for domain
+      description: When given an domain, returns it's IP details such as country or ASN
       parameters:
         - name: details_body
           in: body
-          description: domain for which details will be returned
+          description: domain for which ip details will be returned
           required: true
           schema:
             type: object
@@ -75,7 +75,7 @@ paths:
                 type: string     
       responses:
         200:
-          description: Domain's details
+          description: IP's details
 
   /details/urlscan:
     post:
@@ -160,6 +160,48 @@ paths:
       responses:
         200:
           description: Domain's details from whois
+
+  /verify/by_levenstein:
+    post:
+      operationId: api.verifier.verify_by_levenstein
+      tags:
+      - verify
+      summary: Check if malicious by levenstein distance
+      description: When given a domain, checks if it is evil by calculating it's levenstein distance and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
+
+  /verify/by_entropy:
+    post:
+      operationId: api.verifier.verify_by_entropy
+      tags:
+      - verify
+      summary: Check if malicious by entropy
+      description: When given a domain, checks if it is evil by calculating it's entropy and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
 
   /server/health:
     get:

@@ -1,8 +1,10 @@
 import whois
 import json
 from datetime import datetime
+from helpers.url_helper import url_to_domain
 
 def get_results(domain):
+    domain = url_to_domain(domain)
     d = dict()
     try:
         res = whois.whois(domain)

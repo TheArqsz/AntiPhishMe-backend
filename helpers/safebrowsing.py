@@ -20,4 +20,9 @@ def lookup_url(url):
     if not url:
         raise SafeBrowsingException
     check_apikey()
-    return s.lookup_urls([url])
+    results = s.lookup_urls([url])
+    response = {
+        'url': url,
+        'malicious':  results.get(url).get('malicious')
+    }
+    return response

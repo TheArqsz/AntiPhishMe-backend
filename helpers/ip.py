@@ -5,7 +5,10 @@ from socket import gethostbyname
 from requests import get
 
 def get_ip(domain):
-    return gethostbyname(domain)
+    try:
+        return gethostbyname(domain)
+    except:
+        return None
 
 def get_ip_details(ip):
     url = f"http://ip-api.com/json/{ip}"
@@ -18,7 +21,10 @@ def get_ip_details(ip):
             tries -= 1
         elif 'fail' in response.text:
             if 'reserved range' in response.text or 'private range' in response.text:
-                return None
+                return {
+                    'ip': ip,
+                    'status': 'reserved_range'
+                }
             return None
         else:
             wait(0.5)

@@ -6,12 +6,13 @@ from models.certs_model import *
 from models.ip_model import *
 from models.goodies_model import *
 from helpers.safebrowsing import lookup_url
-from helpers.levenstein import calculate_levenstein
+from helpers.levenstein import levenstein_check
 from helpers.entropy import get_entropy
 from helpers import urlscan
 from datetime import datetime, timedelta
 from phishing.phishing_levels import PhishLevel
 from helpers.consts import Const
+from helpers.url_helper import url_to_domain
 
 def verify_domain_in_baddies(domain):
     baddies = Baddies.get_all_baddies()
@@ -65,26 +66,7 @@ def verify_levenstein(domain):
     """
     good_keywords = [k['good_keyword'] for k in Goodie.get_all_goodies()]
     domain_phrases = domain.split('.')
-    levs = dict()
-    for keyword in good_keywords:
-        levs[keyword] = 0
-    for keyword in good_keywords:
-        for phrase in domain_phrases:
-            if keyword == phrase:
-                continue
-            elif len(keyword) < 2 * len(phrase) \
-            and len(phrase) > 2 \
-            and 0 < calculate_levenstein(keyword, phrase) < 3: 
-                levs[keyword] += 1
-            else:
-                continue
-    #TOASK need help TODO Add something to check if keyword is in domain eg santander-costam.com
-    for key in levs:
-        if levs[key] != 0 and levs[key] <= int(len(domain_phrases) / 2):
-            return True
-        else:
-            continue
-    return False
+    return levenstein_check(good_keywords, domain_phrases)
 
 def verify_entropy(URL):
     if get_entropy(URL) >= Const.ENTROPY_PHISHING_MIN:
@@ -94,7 +76,7 @@ def verify_entropy(URL):
 
 
 def verify_safebrowsing(URL):
-    return lookup_url(URL).get(URL).get('malicious')
+    return lookup_url(URL).get('malicious')
 
 def verify_certsh(domain):
     crt_results = crtsh.get_results(domain) 
@@ -133,7 +115,7 @@ def verify_whois(domain):
 
 
 def verify_all(URL):
-    domain = _url_to_domain(URL)
+    domain = url_to_domain(URL)
     URL = URL.replace("http://", '').replace("https://", '')
     if verify_domain_in_baddies(domain):
         # TOASK what does it mean - TODO return data from crt and ip db + malicious
@@ -179,6 +161,3 @@ def verify_all(URL):
 def _create_baddie(domain):
     # TODO add something to IP, certs and baddies
     pass
-
-def _url_to_domain(URL):
-     return URL.replace("http://", '').replace("https://", '').split('/')[0].split('?')[0]

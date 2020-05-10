@@ -1,7 +1,7 @@
 import json
 
 from pycrtsh import Crtsh
-
+from helpers.url_helper import url_to_domain
 
 def _search_domain(domain):
     """
@@ -9,6 +9,7 @@ def _search_domain(domain):
     Check if domain exists in db of crt.sh and return it's certs
 
     """
+    domain = url_to_domain(domain)
     c = Crtsh()
     certs = c.search(domain)
     if not certs:
@@ -27,6 +28,7 @@ def _get_details(crt_id):
         
 def get_results(domain):
     certs = _search_domain(domain)
+    print(certs)
     if not certs:
         return None 
     d = dict()

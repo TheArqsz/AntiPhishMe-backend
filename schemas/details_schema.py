@@ -13,3 +13,11 @@ details_domain_schema = {
     },
     "required": ["domain"]
 }
+
+details_url_schema = {
+    "type": "object",
+    "properties": {
+        "url": {"type": "string"}
+    },
+    "required": ["url"]
+}

@@ -66,10 +66,10 @@ def search_newest(url):
     else:
         return None, None
 
-def results(uuid):
+def results(uuid, wait_time=Const.URLSCAN_WAIT_SECONDS):
     found = False
     duration = 0
-    while not found and duration < Const.URLSCAN_WAIT_SECONDS:
+    while not found and duration < wait_time:
         response = requests.get(f"https://urlscan.io/api/v1/result/{uuid}")
         null_response_string = '{\n  "message": "Not Found",\n  "description": "We could not find this page",\n  "status": 404\n}'
         r = response.content.decode("utf-8")

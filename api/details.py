@@ -2,9 +2,14 @@ import json
 import jsonschema
 
 from flask import jsonify, Response, request, json
+from datetime import datetime, timedelta
 from schemas.details_schema import *
 from info import ip, domain
 from messages.error_messages import *
+
+from helpers import whois_helper, safebrowsing, crtsh, url_helper, urlscan
+from helpers import ip as ip_helper
+from helpers.consts import Const
 
 import logging
 
@@ -12,32 +17,111 @@ def get_ip_details():
     request_data = request.get_json()
     try:
         jsonschema.validate(request_data, details_ip_schema)
-        info = ip.get_info(request_data.get('ip'))
-        response_text = info
-        response = Response(json.dumps(response_text), 200, mimetype="application/json")
     except jsonschema.exceptions.ValidationError as exc:
-        response = Response(error_message_helper(exc.message), 400, mimetype="application/json")
-    return response
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
 
-def get_domain_details(): 
+    details = ip.get_info(request_data.get('ip'))
+    response_text = {
+        "details": details
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    
+
+def get_ip_details_by_domain(): 
     request_data = request.get_json()
     try:
         jsonschema.validate(request_data, details_domain_schema)
-        info = domain.get_info(request_data.get('domain'))
-        response_text = info
-        response = Response(json.dumps(response_text), 200, mimetype="application/json")
     except jsonschema.exceptions.ValidationError as exc:
-        response = Response(error_message_helper(exc.message), 400, mimetype="application/json")
-    return response
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+    domain = url_helper.url_to_domain(request_data.get('domain'))
+    ip = ip_helper.get_ip(domain)
+    if ip:
+        details = ip_helper.get_ip_details(ip)
+    else:
+        details = Const.UNKNOWN_RESULTS_MESSAGE
+    response_text = {
+        "details": details
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
+
 
 def get_whois_details():
-    return {}
+    request_data = request.get_json()
+    try:
+        jsonschema.validate(request_data, details_domain_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+    results = whois_helper.get_results(request_data.get('domain'))
+    if not results:
+        results = Const.UNKNOWN_RESULTS_MESSAGE
+
+    response_text = {
+        "details": results
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    
+    
 
 def get_sfbrowsing_details():
-    return {}
+    request_data = request.get_json()
+    try:
+        jsonschema.validate(request_data, details_domain_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+    results = safebrowsing.lookup_url(request_data.get('domain'))
+    if not results:
+        results = Const.UNKNOWN_RESULTS_MESSAGE
+
+    response_text = {
+        "details": results
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    
 
 def get_crtsh_details():
-    return {}
+    request_data = request.get_json()
+    try:
+        jsonschema.validate(request_data, details_domain_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+    results = crtsh.get_results(request_data.get('domain'))
+    if not results:
+        results = Const.UNKNOWN_RESULTS_MESSAGE
+
+    response_text = {
+        "details": results
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
 
 def get_urlscan_details():
-    return {}
+    request_data = request.get_json()
+    try:
+        jsonschema.validate(request_data, details_url_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+    URL = request_data.get('url')
+    historic_search, when_performed = urlscan.search_newest(URL)
+    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
+        results = urlscan.results(historic_search.get('_id'))
+        if results:
+            found = True
+        else:
+            found = False
+    if not found:
+        try:
+            url_id = urlscan.submit(URL)
+        except urlscan.UrlscanException:
+            results = Const.UNKNOWN_RESULTS_MESSAGE
+        results = urlscan.results(url_id, wait_time=60)
+        if not results:
+            results = Const.UNKNOWN_RESULTS_MESSAGE
+
+    response_text = {
+        "details": results
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json")
