@@ -1,0 +1,225 @@
+swagger: "2.0"
+info:
+  description: This is the swagger specs for phishing detection API project
+  version: "0.0.1"
+  title: Phishing API backend
+consumes:
+  - application/json
+produces:
+  - application/json
+
+host: $DOMAIN
+basePath: /api/v1
+
+# Paths supported by this application
+paths:
+  /verify/domain:
+    post:
+      operationId: api.verifier.verify_domain
+      tags:
+      - verify
+      summary: Checks domain's evilness 
+      description: When given a domain, checks if it is evil and returns proper response
+      consumes:
+        - application/json
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
+
+  /details/ip:
+    post:
+      operationId: api.details.get_ip_details
+      tags:
+      - details
+      summary: Returns details for IP
+      description: When given an ip, returns it's details such as country or ASN
+      parameters:
+        - name: details_body
+          in: body
+          description: ip for which details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              ip:
+                type: string     
+      responses:
+        200:
+          description: IP's details
+
+  /details/ip_by_domain:
+    post:
+      operationId: api.details.get_ip_details_by_domain
+      tags:
+      - details
+      summary: Returns IP details for domain
+      description: When given an domain, returns it's IP details such as country or ASN
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which ip details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: IP's details
+
+  /details/urlscan:
+    post:
+      operationId: api.details.get_urlscan_details
+      tags:
+      - details
+      summary: Returns results from urlscan
+      description: When given an url, checks in urlscan and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which urlscan details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from urlscan
+
+  /details/safebrowsing:
+    post:
+      operationId: api.details.get_sfbrowsing_details
+      tags:
+      - details
+      summary: Returns results from safebrowsing
+      description: When given an url, checks in safebrowsing and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which safebrowsing details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from safebrowsing
+
+  /details/crtsh:
+    post:
+      operationId: api.details.get_crtsh_details
+      tags:
+      - details
+      summary: Returns results from crtsh
+      description: When given an url, checks in safebrowsing and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which crtsh details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from crtsh
+
+  /details/whois:
+    post:
+      operationId: api.details.get_whois_details
+      tags:
+      - details
+      summary: Returns results from whois
+      description: When given an url, checks in whois and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which whois details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from whois
+
+  /verify/by_levenstein:
+    post:
+      operationId: api.verifier.verify_by_levenstein
+      tags:
+      - verify
+      summary: Check if malicious by levenstein distance
+      description: When given a domain, checks if it is evil by calculating it's levenstein distance and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
+
+  /verify/by_entropy:
+    post:
+      operationId: api.verifier.verify_by_entropy
+      tags:
+      - verify
+      summary: Check if malicious by entropy
+      description: When given a domain, checks if it is evil by calculating it's entropy and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
+
+  /server/health:
+    get:
+      operationId: api.main.health
+      tags:
+      - server
+      summary: Returns status of server
+      responses:
+        200:
+          description: Server's status
+
+  /server/create_db:
+    get:
+      operationId: api.main.create_db
+      tags:
+      - server
+      summary: Creates db
+      responses:
+        200:
+          description: DB status

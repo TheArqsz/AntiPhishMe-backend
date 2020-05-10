@@ -2,16 +2,33 @@ import os
 import connexion
 import logging 
 
-connexion_app = connexion.App(__name__, specification_dir='./swagger')
+# Swagger directory in which .yml files are stored
+SWAGGER_DIR = os.getenv('SWAGGER_DIR', './swagger') 
 
+#
+# Set environment (eg. DEV, PROD) 
+# Set DEBUG mode - debugger turned on and logging level set to DEBUG
+#
 DEBUG = bool(os.getenv('DEBUG', False))
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'DEV')
+
+# Basic connexion app
+connexion_app = connexion.App(__name__, specification_dir=SWAGGER_DIR)
+
+# Base directory for whole project
 BASE_DIR = connexion_app.root_path
+
+# Logging configuration
 LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
 logging.basicConfig(format='[%(name)s %(levelname)s %(asctime)s]  %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=LOGGING_LEVEL)
 
+# Set app details such as host, port and domain
 PORT = os.getenv('PORT', 5000)
-HOST = os.getenv('HOST', '127.0.0.1')
+HOST = os.getenv('HOST', 'localhost')
+DOMAIN = os.getenv('DOMAIN', f"{HOST}:{PORT}")
 
+
+# Database configuration
 SQL_ALCH_DATABASE = None 
 #
 #   ===================================
@@ -35,4 +52,15 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 connexion_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 connexion_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
-connexion_app.add_api('swagger.yml')
+# Set proper swagger.yml file; swagger_base_file needs to be even to swagger.yml (with $DOMAIN)
+if ENVIRONMENT == 'DEV':
+    connexion_app.add_api('swagger.yml')
+else:
+    swagger_base_file = "swagger_base.yml"
+    swagger_file =  f"swagger_{ENVIRONMENT.lower()}.yml"
+    with open(f"{SWAGGER_DIR}/{swagger_base_file}", 'r') as f:
+        text = f.read()
+        text = text.replace('$DOMAIN', DOMAIN) 
+    with open(f"{SWAGGER_DIR}/{swagger_file}", 'w') as w:
+        w.write(text)
+    connexion_app.add_api(swagger_file)
