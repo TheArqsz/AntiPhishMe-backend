@@ -26,7 +26,7 @@ def verify_urlscan(URL):
     historic_search, when_performed = urlscan.search_newest(URL)
     if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
         results = urlscan.results(historic_search.get('_id'))
-        if results.get('malicious'):
+        if results and results.get('malicious'):
             return True, Const.URLSCAN_FINISHED_MESSAGE
         else:
             return False, Const.URLSCAN_FINISHED_MESSAGE
@@ -133,7 +133,7 @@ def verify_whois(domain):
 
 
 def verify_all(URL):
-    domain = URL.replace("http://", '').replace("https://", '').split('/')[0].split('?')[0]
+    domain = _url_to_domain(URL)
     URL = URL.replace("http://", '').replace("https://", '')
     if verify_domain_in_baddies(domain):
         # TOASK what does it mean - TODO return data from crt and ip db + malicious
@@ -179,3 +179,6 @@ def verify_all(URL):
 def _create_baddie(domain):
     # TODO add something to IP, certs and baddies
     pass
+
+def _url_to_domain(URL):
+     return URL.replace("http://", '').replace("https://", '').split('/')[0].split('?')[0]
