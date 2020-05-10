@@ -8,7 +8,7 @@ class Baddies(db.Model):
     __tablename__ = 'baddies'
     id = db.Column(db.Integer(), primary_key=True)
     domain_name = db.Column(db.String(120), unique=True, nullable=False)
-    ip_id = db.Column(db.Integer())#, db.ForeignKey("ip.id"))
+    ip_id = db.Column(db.Integer(), db.ForeignKey("ip.id"))
     crt_id = db.Column(db.Integer(), db.ForeignKey("certs.id"))
     levenstein_len = db.Column(db.Integer())
     entropy = db.Column(db.Integer())
@@ -35,8 +35,8 @@ class Baddies(db.Model):
 
     @staticmethod
     def add_baddie_td():
-        Baddies.add_baddie("google.com", 1, 1, 1, 3)
-        Baddies.add_baddie("weka.com", 4, 1, 2, 3)
+        Baddies.add_baddie("g0ogle.com", 1, 1, 1, 4)
+        Baddies.add_baddie("wekkaa.com", 1, 1, 2, 4)
 
     @staticmethod
     def get_all_baddies():

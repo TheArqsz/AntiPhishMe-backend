@@ -12,78 +12,171 @@ basePath: /api/v1
 
 # Paths supported by this application
 paths:
-  /check/domain:
+  /verify/domain:
     post:
-      operationId: api.main.check_domain
+      operationId: api.verifier.verify_domain
       tags:
-      - checks
+      - verify
       summary: Checks domain's evilness 
       description: When given a domain, checks if it is evil and returns proper response
       consumes:
-        - application/x-www-form-urlencoded
+        - application/json
       parameters:
-        - in: formData
-          name: domain
-          type: string
-          description: Full domain.
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
       responses:
         200:
-          description: Domain's details
+          description: Domain's verdict
 
-  /check/ip:
-    get:
-      operationId: api.verifier.verify
+  /details/ip:
+    post:
+      operationId: api.details.get_ip_details
       tags:
-      - checks
-      summary: Checks ip's evilness 
-      description: When given an ip, checks if it is evil and returns proper response
-      consumes:
-        - application/x-www-form-urlencoded
+      - details
+      summary: Returns details for IP
+      description: When given an ip, returns it's details such as country or ASN
       parameters:
-        - in: formData
-          name: ip
-          type: string
-          description: Full ip.      
+        - name: details_body
+          in: body
+          description: ip for which details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              ip:
+                type: string     
       responses:
         200:
           description: IP's details
 
-  /remote/urlscan:
+  /details/domain:
     post:
-      operationId: api.remote.scan_urlscan
+      operationId: api.details.get_domain_details
       tags:
-      - remote
-      summary: Checks results from urlscan
-      description: When given an url, checks in urlscan if it is evil and returns proper response
-      consumes:
-        - application/x-www-form-urlencoded
+      - details
+      summary: Returns details for domain
+      description: When given a domain, returns it's details such as creation date or number of multiple dns
       parameters:
-        - in: formData
-          name: ip
-          type: string
-          description: Full ip.      
+        - name: details_body
+          in: body
+          description: domain for which details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
       responses:
         200:
-          description: Scan details
-        400:
-          description: Wrong data
+          description: Domain's details
 
-  /remote/safebrowsing:
+  /details/urlscan:
     post:
-      operationId: api.remote.scan_safebrowsing
+      operationId: api.details.get_urlscan_details
       tags:
-      - remote
-      summary: Checks results from Google SafeBrowsing API
-      description: When given an url, checks in SafeBrowsing if it is malicious and returns proper response
-      consumes:
-        - application/x-www-form-urlencoded
+      - details
+      summary: Returns results from urlscan
+      description: When given an url, checks in urlscan and returns details
       parameters:
-        - in: formData
-          name: domain_or_ip
-          type: string
-          description: Full ip or domain.      
+        - name: details_body
+          in: body
+          description: domain for which urlscan details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
       responses:
         200:
-          description: Scan details
-        400:
-          description: Wrong data
+          description: Domain's details from urlscan
+
+  /details/safebrowsing:
+    post:
+      operationId: api.details.get_sfbrowsing_details
+      tags:
+      - details
+      summary: Returns results from safebrowsing
+      description: When given an url, checks in safebrowsing and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which safebrowsing details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from safebrowsing
+
+  /details/crtsh:
+    post:
+      operationId: api.details.get_crtsh_details
+      tags:
+      - details
+      summary: Returns results from crtsh
+      description: When given an url, checks in safebrowsing and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which crtsh details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from crtsh
+
+  /details/whois:
+    post:
+      operationId: api.details.get_whois_details
+      tags:
+      - details
+      summary: Returns results from whois
+      description: When given an url, checks in whois and returns details
+      parameters:
+        - name: details_body
+          in: body
+          description: domain for which whois details will be returned
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string     
+      responses:
+        200:
+          description: Domain's details from whois
+
+  /server/health:
+    get:
+      operationId: api.main.health
+      tags:
+      - server
+      summary: Returns status of server
+      responses:
+        200:
+          description: Server's status
+
+  /server/create_db:
+    get:
+      operationId: api.main.create_db
+      tags:
+      - server
+      summary: Creates db
+      responses:
+        200:
+          description: DB status

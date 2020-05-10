@@ -2,13 +2,15 @@ import os
 import connexion
 import logging 
 
-# create an application instance
-
 connexion_app = connexion.App(__name__, specification_dir='./swagger')
 
-DEBUG = True
+DEBUG = bool(os.getenv('DEBUG', False))
 BASE_DIR = connexion_app.root_path
-logging.basicConfig(format='[%(name)s %(levelname)s %(asctime)s]  %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
+LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
+logging.basicConfig(format='[%(name)s %(levelname)s %(asctime)s]  %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=LOGGING_LEVEL)
+
+PORT = os.getenv('PORT', 5000)
+HOST = os.getenv('HOST', '127.0.0.1')
 
 SQL_ALCH_DATABASE = None 
 #
@@ -29,8 +31,6 @@ else:
     pass
 SQLALCHEMY_DATABASE_URI = SQL_ALCH_DATABASE or 'sqlite:///' + os.path.join(BASE_DIR, 'database/phishing.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-# SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(connexion_app.root_path, 'database/database.db')
 
 connexion_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 connexion_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS

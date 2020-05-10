@@ -3,6 +3,9 @@ import os
 import logging
 import time
 
+from datetime import datetime
+from helpers.consts import Const
+
 API_KEY = os.getenv("URLSCAN_API_KEY") or None
 
 def check_apikey():
@@ -18,7 +21,7 @@ class ApiKeyException(UrlscanException):
 
 def submit(url):
     global API_KEY
-    print(API_KEY)
+    check_apikey()
     headers = {
         'Content-Type': 'application/json',
         'API-Key': API_KEY,
@@ -30,11 +33,10 @@ def submit(url):
     response = requests.post('https://urlscan.io/api/v1/scan/', headers=headers, data=json.dumps(data))
     
     r = response.json()
-    print(response.text)
     if r.get('message') and r.get('message') == "Submission successful":
         return r.get('uuid')
     else:
-        logging.error("[URLSCAN] Cannot submit query")
+        logging.error(f"[URLSCAN] Cannot submit query with url \"{url}\"")
         raise UrlscanException
 
 def search(url):
@@ -46,26 +48,38 @@ def search(url):
     response = requests.get('https://urlscan.io/api/v1/search/', params=params)
     r = response.json()
     time.sleep(2)
-    if r.get("total") > 0:
+    if r.get("total", 0) > 0:
         return r.get("results")
     else:
         return None
 
+def search_newest(url):
+    """
+
+    Returns newest task and it's date of creation
+
+    """
+    res = search(url)
+    if res:
+        sorted_res = sorted(res, key=lambda k: datetime.strptime(k['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"), reverse=True)
+        return sorted_res[0], datetime.strptime(sorted_res[0]['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"),
+    else:
+        return None, None
+
 def results(uuid):
     found = False
     duration = 0
-    wait_time = 30
-    while not found and duration < wait_time:
+    while not found and duration < Const.URLSCAN_WAIT_SECONDS:
         response = requests.get(f"https://urlscan.io/api/v1/result/{uuid}")
-        null_response_string = '"status": 404'
+        null_response_string = '{\n  "message": "Not Found",\n  "description": "We could not find this page",\n  "status": 404\n}'
         r = response.content.decode("utf-8")
-        if null_response_string in r:
-            logging.warning(f"Results for {uuid} not processed. Please check again later.")
+        if null_response_string == r:
+            logging.debug(f"[URLSCAN] Results for {uuid} not processed. Please check again later.")
             time.sleep(2)
             duration += 2
         else:
             found = True
-            logging.info(f"Results for {uuid} processed after {duration} sec.")
+            logging.debug(f"[URLSCAN] Results for {uuid} processed after {duration} sec.")
             j = response.json()
             return summary(response.json())
     return None

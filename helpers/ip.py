@@ -1,3 +1,5 @@
+import logging as log
+
 from time import sleep as wait
 from socket import gethostbyname
 from requests import get
@@ -11,6 +13,7 @@ def get_ip_details(ip):
     while tries != 0:
         response = get(url)
         if response.status_code == 429:
+            log.debug('[IP] Connection locked - trying again in 0.5 sec')
             wait(0.5)
             tries -= 1
         elif 'fail' in response.text:
@@ -25,4 +28,4 @@ def get_ip_details(ip):
                 'ip': ip,
                 'asn': json.get('as')
             }
-
+    return None
