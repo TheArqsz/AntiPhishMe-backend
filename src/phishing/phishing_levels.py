@@ -5,7 +5,7 @@ class PhishLevel:
     }
     SUSPICIOUS = {
             "status": "suspicious",
-            "max_level": 60
+            "max_level": 55
     }
     MALICIOUS = {
             "status": "malicious",

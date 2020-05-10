@@ -2,10 +2,10 @@ import json
 import jsonschema
 
 from flask import jsonify, Response, request, json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from schemas.details_schema import *
 from info import ip, domain
-from messages.error_messages import *
+from messages.error_messages import error_message_helper
 
 from helpers import whois_helper, safebrowsing, crtsh, url_helper, urlscan
 from helpers import ip as ip_helper
@@ -24,7 +24,10 @@ def get_ip_details():
     response_text = {
         "details": details
     }
-    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
     
 
 def get_ip_details_by_domain(): 
@@ -43,7 +46,10 @@ def get_ip_details_by_domain():
     response_text = {
         "details": details
     }
-    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
 
 
 def get_whois_details():
@@ -57,10 +63,14 @@ def get_whois_details():
     if not results:
         results = Const.UNKNOWN_RESULTS_MESSAGE
 
+    print(results)
     response_text = {
         "details": results
     }
-    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
     
     
 
@@ -100,7 +110,10 @@ def get_crtsh_details():
     response_text = {
         "details": results
     }
-    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
 
 def get_urlscan_details():
     request_data = request.get_json()
@@ -133,4 +146,11 @@ def get_urlscan_details():
     response_text = {
         "details": results
     }
-    return Response(json.dumps(response_text), 200, mimetype="application/json")
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
+
+def _default_json_model(o):
+    if isinstance(o, (date, datetime)):
+        return o.isoformat()

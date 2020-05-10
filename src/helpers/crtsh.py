@@ -28,7 +28,6 @@ def _get_details(crt_id):
         
 def get_results(domain):
     certs = _search_domain(domain)
-    print(certs)
     if not certs:
         return None 
     d = dict()

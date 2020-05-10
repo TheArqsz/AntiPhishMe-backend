@@ -5,3 +5,11 @@ verify_domain_schema = {
     },
     "required": ["domain"]
 }
+
+verify_url_schema = {
+    "type": "object",
+    "properties": {
+        "url": {"type": "string"}
+    },
+    "required": ["url"]
+}

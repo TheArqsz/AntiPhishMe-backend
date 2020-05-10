@@ -1,6 +1,8 @@
 import json
 import datetime
+import sqlalchemy
 
+from helpers.consts import Const
 from db_config import db
 
 
@@ -9,10 +11,10 @@ class Certs(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     caid = db.Column(db.Integer(), unique=True, nullable=False)
     is_bad = db.Column(db.Boolean(), default=False)
-    subject_organizationName = db.Column(db.String(160), nullable=False)
-    subject_countryName = db.Column(db.String(160), nullable=False)
-    issuer_commonName = db.Column(db.String(160), nullable=False)
-    registered_at = db.Column(db.DateTime(), nullable=False)
+    subject_organizationName = db.Column(db.String(160))
+    subject_countryName = db.Column(db.String(160))
+    issuer_commonName = db.Column(db.String(160))
+    registered_at = db.Column(db.DateTime())
     multi_dns = db.Column(db.Integer(), nullable=False)
 
 
@@ -46,12 +48,20 @@ class Certs(db.Model):
         is_bad=_is_bad
         )
         db.session.add(new_cert)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+        try:
+            return Certs.query.filter(Certs.caid == _caid).first().id
+        except AttributeError:
+            return -1
 
     @staticmethod
     def add_cert_td():
-        Certs.add_cert(1, "Wojtek", "PL", "Arek", datetime.datetime.utcnow(), 1)
-        Certs.add_cert(1644,  "Let's Encrypt", "EN", "Ola", datetime.datetime.utcnow(), 3, _is_bad=True)
+        Certs.add_cert(4, "Google Inc", "US", "Google Internet Authority", datetime.datetime(2020, 1, 27, 2, 30, 30, 549000), 5)
+        Certs.add_cert(16419,  Const.UNKNOWN_RESULTS_MESSAGE, Const.UNKNOWN_RESULTS_MESSAGE, "Let's Encrypt Authority X3", datetime.datetime(2020, 1, 12, 8, 2, 37, 702000), 1, _is_bad=True)
+        Certs.add_cert(16418,  Const.UNKNOWN_RESULTS_MESSAGE, Const.UNKNOWN_RESULTS_MESSAGE, "Let's Encrypt Authority X3", datetime.datetime(2020, 1, 12, 8, 2, 37, 702000), 1, _is_bad=True)
 
     @staticmethod
     def get_all_certs():

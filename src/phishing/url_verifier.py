@@ -1,5 +1,6 @@
 import helpers.crtsh as crtsh
 import helpers.whois_helper as whois
+import logging as log 
 
 from models.baddies_model import *
 from models.certs_model import *
@@ -13,6 +14,8 @@ from datetime import datetime, timedelta
 from phishing.phishing_levels import PhishLevel
 from helpers.consts import Const
 from helpers.url_helper import url_to_domain
+from helpers import db_helper as db_h
+from helpers.keywords import match_keyword
 
 def verify_domain_in_baddies(domain):
     baddies = Baddies.get_all_baddies()
@@ -23,15 +26,17 @@ def verify_domain_in_baddies(domain):
             continue
     return False
 
-def verify_urlscan(URL):
+def verify_urlscan(URL, force_scan=False):
     historic_search, when_performed = urlscan.search_newest(URL)
     if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
         results = urlscan.results(historic_search.get('_id'))
+        log.debug(results)
         if results and results.get('malicious'):
             return True, Const.URLSCAN_FINISHED_MESSAGE
         else:
             return False, Const.URLSCAN_FINISHED_MESSAGE
     else:
+        log.debug('NOPE')
         try:
             url_id = urlscan.submit(URL)
         except urlscan.UrlscanException:
@@ -54,7 +59,7 @@ def verify_levenstein(domain):
         'keyword': 0
     }
     Do not compare if given keyword is same as domain
-    If length of keyword is less than 2 * legth of domain phrase
+    If length of keyword is less than 2 * length of domain phrase
         and length of domain phrase is longer than 2 (to exclude eg 'wp' or 'pl')
         and levenstein's distance is less than 3 and more than 0
         then increase lev's amount for keyword
@@ -66,14 +71,18 @@ def verify_levenstein(domain):
     """
     good_keywords = [k['good_keyword'] for k in Goodie.get_all_goodies()]
     domain_phrases = domain.split('.')
-    return levenstein_check(good_keywords, domain_phrases)
+    verdict, _, _ = levenstein_check(good_keywords, domain_phrases)
+    return verdict
+
+def verify_keyword_match(domain):
+    verdict, _ = match_keyword(domain)
+    return verdict
 
 def verify_entropy(URL):
     if get_entropy(URL) >= Const.ENTROPY_PHISHING_MIN:
         return True
     else:
         return False
-
 
 def verify_safebrowsing(URL):
     return lookup_url(URL).get('malicious')
@@ -116,25 +125,27 @@ def verify_whois(domain):
 
 def verify_all(URL):
     domain = url_to_domain(URL)
+    RAW_URL = URL
     URL = URL.replace("http://", '').replace("https://", '')
     if verify_domain_in_baddies(domain):
         # TOASK what does it mean - TODO return data from crt and ip db + malicious
         return PhishLevel.MALICIOUS.get('status')
     else:
-        sf_verdict = verify_safebrowsing(URL)
+        sf_verdict = verify_safebrowsing(RAW_URL)
         crt_verdict = verify_certsh(domain)
         whois_verdict = verify_whois(domain)
-        urlscan_verdict, urlscan_message = verify_urlscan(URL)
+        urlscan_verdict, urlscan_message = verify_urlscan(RAW_URL)
         leven_verdict = verify_levenstein(domain)
         entropy_verdict = verify_entropy(URL)
+        keyword_match_verdict = verify_keyword_match(domain)
         final_points = 0
         # 0 - 100
         if whois_verdict:
             print("WHOIS + 10")
             final_points += 10
         if sf_verdict:
-            print("SAFEBROWSE + 30")
-            final_points += 30
+            print("SAFEBROWSE + 25")
+            final_points += 25
         if crt_verdict:
             print("CERTSH + 20")
             final_points += 20
@@ -143,6 +154,9 @@ def verify_all(URL):
             final_points += 15
         if entropy_verdict:
             print("ENTROPY + 5")
+            final_points += 5
+        if keyword_match_verdict:
+            print("KEYWORD MATCH + 5")
             final_points += 5
         if urlscan_message == Const.URLSCAN_FINISHED_MESSAGE and urlscan_verdict:
             print("URLSCAN + 30")
@@ -155,9 +169,5 @@ def verify_all(URL):
         elif final_points < PhishLevel.SUSPICIOUS.get('max_level'):
             return PhishLevel.SUSPICIOUS.get('status')
         else:
-            _create_baddie(domain)
+            db_h.DBHelper(db_h.create_baddie, (domain,)).run()
             return PhishLevel.MALICIOUS.get('status')
-
-def _create_baddie(domain):
-    # TODO add something to IP, certs and baddies
-    pass

@@ -1,5 +1,6 @@
 import json
 import datetime
+import sqlalchemy
 
 from db_config import db
 
@@ -27,11 +28,20 @@ class IP(db.Model):
         ):
         new_ip = IP(ip=_ip, country=_country, asn=_asn)
         db.session.add(new_ip)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+        return IP.query.filter(IP.ip == _ip).first().id
+
+        
 
     @staticmethod
     def add_ip_td():
-        IP.add_ip('127.0.0.1')
+        IP.add_ip('8.8.8.8', 'US', 'AS15169 Google LLC')
+        IP.add_ip('4.4.4.4', 'US', 'AS3356 Level 3 Parent, LLC')
+        IP.add_ip('1.1.1.1', 'AU', 'AS13335 Cloudflare, Inc.')
+        IP.add_ip('156.17.93.11', 'PL', 'AS8970 Wroclaw Centre of Networking and Supercomputing')
 
     @staticmethod
     def get_all_ip():

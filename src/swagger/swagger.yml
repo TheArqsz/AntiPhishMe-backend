@@ -231,3 +231,88 @@ paths:
       responses:
         200:
           description: DB status
+
+  /verify/by_sfbrowsing:
+    post:
+      operationId: api.verifier.verify_by_sfbrowsing
+      tags:
+      - verify
+      summary: Check if malicious by safebrowsing
+      description: When given a url, checks if it is evil by safebrowsing and returns proper response
+      parameters:
+        - name: url_body
+          in: body
+          description: url to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+      responses:
+        200:
+          description: url's verdict
+
+  /verify/by_urlscan:
+    post:
+      operationId: api.verifier.verify_by_urlscan
+      tags:
+      - verify
+      summary: Check if malicious by urlscan
+      description: When given a domain, checks if it is evil by urlscan and returns proper response
+      parameters:
+        - name: url_body
+          in: body
+          description: url to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+      responses:
+        200:
+          description: URL's verdict
+
+
+  /verify/by_crt:
+    post:
+      operationId: api.verifier.verify_by_crt
+      tags:
+      - verify
+      summary: Check if malicious by crt.sh
+      description: When given a domain, checks if it is evil by crt.sh and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
+
+  /verify/by_keywords:
+    post:
+      operationId: api.verifier.verify_by_keywords
+      tags:
+      - verify
+      summary: Check if malicious by checking keywords' match
+      description: When given a domain, checks if it is evil by keywords' match and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict
