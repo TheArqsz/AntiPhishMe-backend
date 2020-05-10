@@ -11,7 +11,7 @@ from helpers import whois_helper, safebrowsing, crtsh, url_helper, urlscan
 from helpers import ip as ip_helper
 from helpers.consts import Const
 
-import logging
+import logging as log
 
 def get_ip_details(): 
     request_data = request.get_json()
@@ -71,7 +71,12 @@ def get_sfbrowsing_details():
     except jsonschema.exceptions.ValidationError as exc:
         return Response(error_message_helper(exc.message), 400, mimetype="application/json")
 
-    results = safebrowsing.lookup_url(request_data.get('domain'))
+    try:
+        results = safebrowsing.lookup_url(request_data.get('domain'))
+    except safebrowsing.ApiKeyException as exc:
+        log.error(exc)
+        return Response(error_message_helper(exc.message), 401, mimetype="application/json")
+
     if not results:
         results = Const.UNKNOWN_RESULTS_MESSAGE
 
@@ -106,17 +111,21 @@ def get_urlscan_details():
 
     URL = request_data.get('url')
     historic_search, when_performed = urlscan.search_newest(URL)
+    found = False
     if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
         results = urlscan.results(historic_search.get('_id'))
         if results:
             found = True
-        else:
-            found = False
+
     if not found:
         try:
             url_id = urlscan.submit(URL)
-        except urlscan.UrlscanException:
-            results = Const.UNKNOWN_RESULTS_MESSAGE
+        except urlscan.ApiKeyException as exc:
+            return Response(error_message_helper(exc.message), 401, mimetype="application/json")
+        except urlscan.UrlscanException as exc:
+            return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+
+
         results = urlscan.results(url_id, wait_time=60)
         if not results:
             results = Const.UNKNOWN_RESULTS_MESSAGE

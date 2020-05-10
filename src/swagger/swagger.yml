@@ -8,7 +8,6 @@ consumes:
 produces:
   - application/json
 
-host: $DOMAIN
 basePath: /api/v1
 
 # Paths supported by this application
@@ -88,16 +87,20 @@ paths:
       parameters:
         - name: details_body
           in: body
-          description: domain for which urlscan details will be returned
+          description: url for which urlscan details will be returned
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string     
       responses:
         200:
           description: Domain's details from urlscan
+        400:
+          description: Wrong URL provided
+        401:
+          description: Authorization error at urlscan.io
 
   /details/safebrowsing:
     post:
@@ -119,6 +122,11 @@ paths:
       responses:
         200:
           description: Domain's details from safebrowsing
+        400:
+          description: Wrong domain provided
+        401:
+          description: Authorization error at safebrowsing
+  
 
   /details/crtsh:
     post:

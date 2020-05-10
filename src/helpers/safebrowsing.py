@@ -11,10 +11,12 @@ def check_apikey():
         raise ApiKeyException
 
 class SafeBrowsingException(Exception):
-    pass
+    def __init__(self, message='safebrowsing exception'):
+        self.message = message
 
 class ApiKeyException(SafeBrowsingException):
-    pass
+    def __init__(self, message='safebrowsing authorization error'):
+        self.message = message
 
 def lookup_url(url):
     if not url:

@@ -14,10 +14,12 @@ def check_apikey():
         raise ApiKeyException
 
 class UrlscanException(Exception):
-    pass
+    def __init__(self, message='urlscan.io exception'):
+        self.message = message
 
 class ApiKeyException(UrlscanException):
-    pass
+    def __init__(self, message='urlscan.io authorization error'):
+        self.message = message
 
 def submit(url):
     global API_KEY
@@ -37,7 +39,7 @@ def submit(url):
         return r.get('uuid')
     else:
         logging.error(f"[URLSCAN] Cannot submit query with url \"{url}\"")
-        raise UrlscanException
+        raise UrlscanException(message=f"[URLSCAN] Cannot submit query with url \"{url}\"")
 
 def search(url):
     if '://' in url:
