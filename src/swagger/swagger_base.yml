@@ -539,3 +539,24 @@ paths:
       responses:
         200:
           description: Domain's verdict
+
+  /verify/by_whois:
+    post:
+      operationId: api.verifier.verify_by_whois
+      tags:
+      - verify
+      summary: Check if malicious by checking whois
+      description: When given a domain, checks if it is evil in whois and returns proper response
+      parameters:
+        - name: domain_body
+          in: body
+          description: domain to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              domain:
+                type: string
+      responses:
+        200:
+          description: Domain's verdict

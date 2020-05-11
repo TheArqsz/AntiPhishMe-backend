@@ -127,7 +127,7 @@ def verify_by_keywords():
     request_data = request.get_json()
     try:
         jsonschema.validate(request_data, verify_domain_schema)
-        verify, _ = verify_keyword_match(request_data.get('domain'))
+        verify = verify_keyword_match(request_data.get('domain'))
         if verify:
             verdict = PhishLevel.MALICIOUS.get('status')
         else:
