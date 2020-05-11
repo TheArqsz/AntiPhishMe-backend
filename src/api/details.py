@@ -2,7 +2,7 @@ import json
 import jsonschema
 import logging as log
 
-from flask import jsonify, Response, request, json
+from flask import Response
 from datetime import datetime, timedelta, date
 from schemas.details_schema import *
 
@@ -12,14 +12,13 @@ from helpers.url_helper import url_to_domain
 
 from werkzeug.exceptions import BadRequest, Unauthorized
 
-def get_ip_details(): 
-    request_data = request.get_json()
+def get_ip_details(ip_body): 
     try:
-        jsonschema.validate(request_data, details_ip_schema)
+        jsonschema.validate(ip_body, details_ip_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    details = ip_module.get_ip_details(request_data.get('ip'))
+    details = ip_module.get_ip_details(ip_body.get('ip'))
     if not details:
         raise BadRequest('Wrong IP')
 
@@ -32,14 +31,13 @@ def get_ip_details():
             ), 200, mimetype="application/json")
     
 
-def get_ip_details_by_url(): 
-    request_data = request.get_json()
+def get_ip_details_by_url(url_body): 
     try:
-        jsonschema.validate(request_data, details_url_schema)
+        jsonschema.validate(url_body, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    domain = url_to_domain(request_data.get('url'))
+    domain = url_to_domain(url_body.get('url'))
     ip = ip_module.get_ip(domain)
     if ip:
         details = ip_module.get_ip_details(ip)
@@ -55,14 +53,13 @@ def get_ip_details_by_url():
             ), 200, mimetype="application/json")
 
 
-def get_whois_details():
-    request_data = request.get_json()
+def get_whois_details(url_body):
     try:
-        jsonschema.validate(request_data, details_url_schema)
+        jsonschema.validate(url_body, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    domain = url_to_domain(request_data.get('url'))
+    domain = url_to_domain(url_body.get('url'))
     results = whois_module.get_results(domain)
     if not results:
         raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
@@ -77,15 +74,14 @@ def get_whois_details():
     
     
 
-def get_sfbrowsing_details():
-    request_data = request.get_json()
+def get_sfbrowsing_details(url_body):
     try:
-        jsonschema.validate(request_data, details_url_schema)
+        jsonschema.validate(url_body, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
     try:
-        results = safebrowsing.lookup_url(request_data.get('url'))
+        results = safebrowsing.lookup_url(url_body.get('url'))
     except safebrowsing.ApiKeyException as exc:
         log.error(exc)
         raise Unauthorized(exc.message)
@@ -99,14 +95,13 @@ def get_sfbrowsing_details():
     return Response(json.dumps(response_text), 200, mimetype="application/json")
     
 
-def get_crtsh_details():
-    request_data = request.get_json()
+def get_crtsh_details(url_body):
     try:
-        jsonschema.validate(request_data, details_url_schema)
+        jsonschema.validate(url_body, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    domain = url_to_domain(request_data.get('url'))
+    domain = url_to_domain(url_body.get('url'))
     results = crtsh.get_results(domain)
     if not results:
         raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
@@ -119,17 +114,16 @@ def get_crtsh_details():
             default=_default_json_model
             ), 200, mimetype="application/json")
 
-def get_urlscan_details():
-    request_data = request.get_json()
+def get_urlscan_details(url_body):
     try:
-        jsonschema.validate(request_data, details_url_schema)
+        jsonschema.validate(url_body, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    URL = request_data.get('url')
+    URL = url_body.get('url')
     historic_search, when_performed = urlscan.search_newest(URL)
     found = False
-    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
+    if when_performed and datetime.utcnow() - timedelta(days=Const.WEEK_DAYS) > when_performed:
         results = urlscan.results(historic_search.get('_id'))
         if results:
             found = True

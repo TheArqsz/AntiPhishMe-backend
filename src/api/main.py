@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Response, request
+from flask import Response
 from sqlalchemy import create_engine
 
 from models.baddies_model import Baddies
@@ -27,7 +27,6 @@ def create_db():
     return Response(json.dumps(response_text), 200, mimetype='application/json')
 
 def health():
-    # Check db
     if _db_status():
         db_status = 'OK'
     else:
@@ -39,10 +38,8 @@ def health():
     }
     return Response(json.dumps(response_text), 200, mimetype='application/json')
 
-def add_keyword():
-    form = request.form
-    if 'keyword' in form:
-        keyword = form.get('keyword')
+def add_keyword(keyword, token_info):
+    if keyword:
         if len(keyword) < 4:
             raise BadRequest('Keyword too short - min 4 signs')
         Goodies.add_goodie(keyword)
