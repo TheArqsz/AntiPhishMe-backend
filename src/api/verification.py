@@ -22,7 +22,23 @@ def verify_by_all():
     }
     return Response(json.dumps(response_text), 200, mimetype="application/json")
     
-    
+def verify_by_cert_hole(): 
+    request_data = request.get_json()
+    try:
+        jsonschema.validate(request_data, verify_url_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        raise BadRequest(exc.message)
+
+    domain = url_to_domain(request_data.get('url'))
+    if verify_cert_hole(domain):
+        verdict = PhishLevel.MALICIOUS.get('status')
+    else:
+        verdict = PhishLevel.GOOD.get('status')
+        
+    response_text = { 
+        "result": f"{verdict}" 
+    }
+    return Response(json.dumps(response_text), 200, mimetype="application/json") 
 
 def verify_by_levenstein(): 
     request_data = request.get_json()

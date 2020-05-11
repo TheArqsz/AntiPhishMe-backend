@@ -33,7 +33,7 @@ def levenstein_check(keywords, phrases_to_check):
             if keyword == phrase:
                 continue
             elif len(keyword) < 2 * len(phrase) \
-            and len(phrase) > 2 \
+            and len(phrase) > 3 \
             and 0 < calculate_levenstein(keyword, phrase) < 3: 
                 levs[keyword]['hits'] += 1
                 levs[keyword]['match_keyword'] = keyword

@@ -11,6 +11,7 @@ from api_modules import urlscan
 from api_modules.keywords import match_keyword
 import api_modules.whois_module as whois
 import api_modules.crtsh as crtsh
+import api_modules.cert_hole as ch
 
 from datetime import datetime, timedelta
 from helpers.phishing_levels import PhishLevel
@@ -122,13 +123,20 @@ def verify_whois(domain):
     else:
         return False
 
-
+def verify_cert_hole(domain):
+    if domain in ch.get_phishing_domains():
+        return True
+    else:
+        return False
 
 def verify_all(URL):
     domain = url_to_domain(URL)
     RAW_URL = URL
     URL = URL.replace("http://", '').replace("https://", '')
     if verify_domain_in_baddies(domain):
+        return PhishLevel.MALICIOUS.get('status')
+    elif verify_cert_hole(domain):
+        db_h.DBHelper(db_h.create_baddie, (domain,)).run()
         return PhishLevel.MALICIOUS.get('status')
     else:
         sf_verdict = verify_safebrowsing(RAW_URL)

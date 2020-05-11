@@ -23,7 +23,7 @@ paths:
       tags:
       - verify
       summary: Checks url's phishing status
-      description: When given a url, checks if it is phishing by querying multiple validator and returns proper response
+      description: When given a url, checks if it is phishing by querying multiple validators and returns proper response
       consumes:
         - application/json
       parameters:
@@ -34,7 +34,32 @@ paths:
           schema:
             type: object
             properties:
-              domain:
+              url:
+                type: string
+      responses:
+        200:
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
+
+  /verify/by_cert_hole:
+    post:
+      operationId: api.verification.verify_by_cert_hole
+      tags:
+      - verify
+      summary: Checks url's phishing status in hole.cert.pl
+      description: When given a url, checks if it is phishing by querying hole.cert.pl and returns proper response
+      consumes:
+        - application/json
+      parameters:
+        - name: url_body
+          in: body
+          description: URL to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
                 type: string
       responses:
         200:

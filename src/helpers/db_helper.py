@@ -39,7 +39,7 @@ def add_cert(domain, is_bad=False):
     """
     crt_results = crtsh.get_results(domain) 
     if not crt_results:
-        return False, None
+        return None
     
     crt_id = Certs.add_cert(
         crt_results.get('caid'),
@@ -53,7 +53,7 @@ def add_cert(domain, is_bad=False):
     if crt_id:
         return True, crt_id
     else:
-        return False, None
+        return None
 
 def add_ip(domain):
     """
@@ -72,12 +72,12 @@ def add_ip(domain):
     if success and ip:
         details = get_ip_details(ip) 
     else:
-        return False, None
+        return None
     ip_id = IP.add_ip(ip, details.get('country', None), details.get('asn', None))
     if ip_id:
         return True, ip_id
     else:
-        return False, None
+        return None
     
 def add_baddie(domain, ip_id, crt_id, lev_d, lev_matched_keyword, contained_matched_keyword, entropy):
     return Baddies.add_baddie(domain, ip_id, crt_id, lev_d, lev_matched_keyword, contained_matched_keyword, entropy)
@@ -102,5 +102,5 @@ def create_baddie(domain):
     if not contained_matched_keyword:
         contained_matched_keyword = ''
     entropy = ent.get_entropy(domain)
-    return add_baddie(domain, ip_id[0], crt_id[0], lev_distance, lev_matched_keyword, contained_matched_keyword, entropy)
+    return add_baddie(domain, ip_id[1], crt_id[1], lev_distance, lev_matched_keyword, contained_matched_keyword, entropy)
 
