@@ -14,6 +14,8 @@ ENVIRONMENT = os.getenv('ENV', 'dev')
 LOCAL_ENVIRONMENTS = ['dev', 'develop', 'local']
 DOCKER_LOCAL_ENVIRONMENTS = ['docker_dev', 'docker_develop', 'docker_local'] 
 
+AUTH_API_KEY = os.getenv('AUTH_API_KEY', 'test_api_key_978675645342312')
+
 # Basic connexion app
 connexion_app = connexion.App(__name__, specification_dir=SWAGGER_DIR)
 
@@ -29,7 +31,6 @@ PORT = os.getenv('PORT', 5000)
 HOST = os.getenv('HOST', 'localhost')
 DOMAIN = os.getenv('DOMAIN', f"{HOST}:{PORT}")
 BASE_PATH = os.getenv('BASE_PATH', "/api/v1")
-
 
 # Database configuration
 SQL_ALCH_DATABASE = None 
@@ -60,16 +61,11 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 connexion_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 connexion_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
-# Set proper swagger.yml file; swagger_base_file needs to be even to swagger.yml (with $DOMAIN)
-if ENVIRONMENT.lower() in LOCAL_ENVIRONMENTS:
-    connexion_app.add_api('swagger.yml')
-else:
-    swagger_base_file = "swagger_base.yml"
-    swagger_file =  f"swagger_{ENVIRONMENT.lower()}.yml"
-    with open(f"{SWAGGER_DIR}/{swagger_base_file}", 'r') as f:
-        text = f.read()
-        text = text.replace('$DOMAIN', DOMAIN) 
-        text = text.replace('$BASE_PATH', BASE_PATH) 
-    with open(f"{SWAGGER_DIR}/{swagger_file}", 'w') as w:
-        w.write(text)
-    connexion_app.add_api(swagger_file)
+# Set proper swagger.yml file variables;
+arguments = {
+    'host': DOMAIN
+}
+options = {
+    'strict_validation': True
+}
+connexion_app.add_api('swagger.yml', base_path=BASE_PATH, options=options, arguments=arguments)

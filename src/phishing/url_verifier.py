@@ -1,21 +1,22 @@
-import helpers.crtsh as crtsh
-import helpers.whois_helper as whois
 import logging as log 
 
-from models.baddies_model import *
-from models.certs_model import *
-from models.ip_model import *
-from models.goodies_model import *
-from helpers.safebrowsing import lookup_url
-from helpers.levenstein import levenstein_check
-from helpers.entropy import get_entropy
-from helpers import urlscan
+from models.baddies_model import Baddies
+from models.certs_model import Certs
+from models.goodies_model import Goodies
+
+from api_modules.safebrowsing import lookup_url
+from api_modules.levenstein import levenstein_check
+from api_modules.entropy import get_entropy
+from api_modules import urlscan
+from api_modules.keywords import match_keyword
+import api_modules.whois_module as whois
+import api_modules.crtsh as crtsh
+
 from datetime import datetime, timedelta
-from phishing.phishing_levels import PhishLevel
+from helpers.phishing_levels import PhishLevel
 from helpers.consts import Const
 from helpers.url_helper import url_to_domain
 from helpers import db_helper as db_h
-from helpers.keywords import match_keyword
 
 def verify_domain_in_baddies(domain):
     baddies = Baddies.get_all_baddies()
@@ -28,7 +29,7 @@ def verify_domain_in_baddies(domain):
 
 def verify_urlscan(URL, force_scan=False):
     historic_search, when_performed = urlscan.search_newest(URL)
-    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
+    if not force_scan and when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
         results = urlscan.results(historic_search.get('_id'))
         log.debug(results)
         if results and results.get('malicious'):
@@ -36,7 +37,7 @@ def verify_urlscan(URL, force_scan=False):
         else:
             return False, Const.URLSCAN_FINISHED_MESSAGE
     else:
-        log.debug('NOPE')
+        log.debug('[URL_VERIFY] Force scanning URL')
         try:
             url_id = urlscan.submit(URL)
         except urlscan.UrlscanException:
@@ -69,7 +70,7 @@ def verify_levenstein(domain):
         it is not
 
     """
-    good_keywords = [k['good_keyword'] for k in Goodie.get_all_goodies()]
+    good_keywords = [k['good_keyword'] for k in Goodies.get_all_goodies()]
     domain_phrases = domain.split('.')
     verdict, _, _ = levenstein_check(good_keywords, domain_phrases)
     return verdict
@@ -128,7 +129,6 @@ def verify_all(URL):
     RAW_URL = URL
     URL = URL.replace("http://", '').replace("https://", '')
     if verify_domain_in_baddies(domain):
-        # TOASK what does it mean - TODO return data from crt and ip db + malicious
         return PhishLevel.MALICIOUS.get('status')
     else:
         sf_verdict = verify_safebrowsing(RAW_URL)
@@ -139,30 +139,31 @@ def verify_all(URL):
         entropy_verdict = verify_entropy(URL)
         keyword_match_verdict = verify_keyword_match(domain)
         final_points = 0
-        # 0 - 100
+        # Scale 0 - 100
         if whois_verdict:
-            print("WHOIS + 10")
+            log.debug("[URL_VERIFY] WHOIS validation - checked")
             final_points += 10
         if sf_verdict:
-            print("SAFEBROWSE + 25")
+            log.debug("[URL_VERIFY] SAFEBROWSE validation - checked")
             final_points += 25
         if crt_verdict:
-            print("CERTSH + 20")
+            log.debug("[URL_VERIFY] CERTSH validation - checked")
             final_points += 20
         if leven_verdict:
-            print("LEVEN + 15")
+            log.debug("[URL_VERIFY] LEVEN validation - checked")
             final_points += 15
         if entropy_verdict:
-            print("ENTROPY + 5")
+            log.debug("[URL_VERIFY] ENTROPY validation - checked")
             final_points += 5
         if keyword_match_verdict:
-            print("KEYWORD MATCH + 5")
+            log.debug("[URL_VERIFY] KEYWORD MATCH validation - checked")
             final_points += 5
         if urlscan_message == Const.URLSCAN_FINISHED_MESSAGE and urlscan_verdict:
-            print("URLSCAN + 30")
+            log.debug("[URL_VERIFY] URLSCAN validation - checked")
             final_points += 30
 
-        print('POINTS: ' + str(final_points))
+        if final_points > 0:
+            log.debug(f"[URL_VERIFY] Final points for \"{URL}\": {final_points}")
 
         if final_points < PhishLevel.GOOD.get('max_level'):
             return PhishLevel.GOOD.get('status')

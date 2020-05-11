@@ -6,13 +6,13 @@ import logging as log
 from models.ip_model import IP
 from models.baddies_model import Baddies 
 from models.certs_model import Certs
-from models.goodies_model import Goodie
+from models.goodies_model import Goodies
 
-from helpers.ip import get_ip, get_ip_details
-from helpers import crtsh
-from helpers import levenstein as lev
-from helpers import entropy as ent
-from helpers.keywords import match_keyword
+from api_modules.ip_module import get_ip, get_ip_details
+from api_modules import crtsh
+from api_modules import levenstein as lev
+from api_modules import entropy as ent
+from api_modules.keywords import match_keyword
 
 class DBHelper():
     """
@@ -85,8 +85,7 @@ def add_baddie(domain, ip_id, crt_id, lev_d, lev_matched_keyword, contained_matc
 def create_baddie(domain):
     ip_id = add_ip(domain) or (False,-1)
     crt_id = add_cert(domain) or (False,-1)
-    # TOASK co z tym? jak obliczyć levensteina dla całej domeny
-    good_keywords = [k['good_keyword'] for k in Goodie.get_all_goodies()]
+    good_keywords = [k['good_keyword'] for k in Goodies.get_all_goodies()]
     domain_phrases = domain.split('.')
     _, _, lev_matched_keyword = lev.levenstein_check(good_keywords, domain_phrases) 
     

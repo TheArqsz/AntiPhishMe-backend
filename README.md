@@ -34,3 +34,4 @@ At default, swaggerUI can be found at `localhost:5000/api/v1/ui`
 | BASE_PATH | Base path for swagger | `/api/v1` | `/api/v1` |
 | URLSCAN_API_KEY | API key for urlscan.io | `-` | `-` |
 | SAFEBROWSING_API_KEY | API key for safebrowsing | `-` | `-` |
+| AUTH_API_KEY | API key for server and db endpoints | `-` | `test_api_key_978675645342312` |

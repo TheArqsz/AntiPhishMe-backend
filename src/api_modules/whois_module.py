@@ -18,4 +18,6 @@ def get_results(domain):
     d['name'] = res.get('name', None)
     d['org'] = res.get('org', None)
     d['country'] = res.get('country', None)
+    if all(value == None for value in d.values()):
+        return None
     return d

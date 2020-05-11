@@ -1,30 +1,35 @@
 swagger: "2.0"
 info:
   description: This is the swagger specs for phishing detection API project
-  version: "0.0.1"
+  version: "0.0.2"
   title: Phishing API backend
-consumes:
-  - application/json
 produces:
   - application/json
 
-basePath: /api/v1
+host: {{ host }}
 
-# Paths supported by this application
+tags:
+  - name: "server"
+    description: "Server and DB related enpoints"
+  - name: "details"
+    description: "Get details from provided services"
+  - name: "verify"
+    description: "Verify given variable with given services"
+
 paths:
-  /verify/domain:
+  /verify/all:
     post:
-      operationId: api.verifier.verify_domain
+      operationId: api.verification.verify_by_all
       tags:
       - verify
-      summary: Checks domain's evilness 
-      description: When given a domain, checks if it is evil and returns proper response
+      summary: Checks url's phishing status
+      description: When given a url, checks if it is phishing by querying multiple validator and returns proper response
       consumes:
         - application/json
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: URL to be checked
           required: true
           schema:
             type: object
@@ -33,7 +38,9 @@ paths:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
 
   /details/ip:
     post:
@@ -43,7 +50,7 @@ paths:
       summary: Returns details for IP
       description: When given an ip, returns it's details such as country or ASN
       parameters:
-        - name: details_body
+        - name: ip_body
           in: body
           description: ip for which details will be returned
           required: true
@@ -55,27 +62,31 @@ paths:
       responses:
         200:
           description: IP's details
+        400:
+          description: Bad request (eg. wrong IP)
 
-  /details/ip_by_domain:
+  /details/ip_by_url:
     post:
-      operationId: api.details.get_ip_details_by_domain
+      operationId: api.details.get_ip_details_by_url
       tags:
       - details
-      summary: Returns IP details for domain
-      description: When given an domain, returns it's IP details such as country or ASN
+      summary: Returns IP details for given url
+      description: When given an url, returns it's IP details such as country or ASN
       parameters:
-        - name: details_body
+        - name: url_body
           in: body
-          description: domain for which ip details will be returned
+          description: url for which ip details will be returned
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string     
       responses:
         200:
-          description: IP's details
+          description: URL's IP's details
+        400:
+          description: Bad request (eg. wrong URL)
 
   /details/urlscan:
     post:
@@ -85,7 +96,7 @@ paths:
       summary: Returns results from urlscan
       description: When given an url, checks in urlscan and returns details
       parameters:
-        - name: details_body
+        - name: url_body
           in: body
           description: url for which urlscan details will be returned
           required: true
@@ -98,9 +109,9 @@ paths:
         200:
           description: Domain's details from urlscan
         400:
-          description: Wrong URL provided
+          description: Bad request (eg. wrong URL)
         401:
-          description: Authorization error at urlscan.io
+          description: Unauthorized (authorization error at urlscan.io)
 
   /details/safebrowsing:
     post:
@@ -110,22 +121,22 @@ paths:
       summary: Returns results from safebrowsing
       description: When given an url, checks in safebrowsing and returns details
       parameters:
-        - name: details_body
+        - name: url_body
           in: body
-          description: domain for which safebrowsing details will be returned
+          description: url for which safebrowsing details will be returned
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string     
       responses:
         200:
-          description: Domain's details from safebrowsing
+          description: URL's details from safebrowsing
         400:
-          description: Wrong domain provided
+          description: Bad request (eg. wrong URL)
         401:
-          description: Authorization error at safebrowsing
+          description: Unauthorized (authorization error at safebrowsing)
   
 
   /details/crtsh:
@@ -136,18 +147,20 @@ paths:
       summary: Returns results from crtsh
       description: When given an url, checks in safebrowsing and returns details
       parameters:
-        - name: details_body
+        - name: url_body
           in: body
-          description: domain for which crtsh details will be returned
+          description: url for which crtsh details will be returned
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string     
       responses:
         200:
           description: Domain's details from crtsh
+        400:
+          description: Bad request (eg. wrong URL)
 
   /details/whois:
     post:
@@ -157,60 +170,66 @@ paths:
       summary: Returns results from whois
       description: When given an url, checks in whois and returns details
       parameters:
-        - name: details_body
+        - name: url_body
           in: body
-          description: domain for which whois details will be returned
+          description: url for which whois details will be returned
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string     
       responses:
         200:
-          description: Domain's details from whois
+          description: URL's details from whois
+        400:
+          description: Bad request (eg. wrong URL)
 
   /verify/by_levenstein:
     post:
-      operationId: api.verifier.verify_by_levenstein
+      operationId: api.verification.verify_by_levenstein
       tags:
       - verify
-      summary: Check if malicious by levenstein distance
-      description: When given a domain, checks if it is evil by calculating it's levenstein distance and returns proper response
+      summary: Check if phishing by calculating levenstein's distance
+      description: When given an url, checks if it is phishing by calculating it's levenstein distance and returns proper response
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: url to be checked
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
 
   /verify/by_entropy:
     post:
-      operationId: api.verifier.verify_by_entropy
+      operationId: api.verification.verify_by_entropy
       tags:
       - verify
-      summary: Check if malicious by entropy
-      description: When given a domain, checks if it is evil by calculating it's entropy and returns proper response
+      summary: Check if phishing by calculating entropy
+      description: When given an url, checks if it is phishing by calculating it's entropy and returns proper response
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: url to be checked
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
 
   /server/health:
     get:
@@ -227,39 +246,20 @@ paths:
       operationId: api.main.create_db
       tags:
       - server
-      summary: Creates db
+      summary: Creates database
       responses:
         200:
-          description: DB status
+          description: Database's status
+      security:
+        - api_key: []
 
   /verify/by_sfbrowsing:
     post:
-      operationId: api.verifier.verify_by_sfbrowsing
+      operationId: api.verification.verify_by_sfbrowsing
       tags:
       - verify
-      summary: Check if malicious by safebrowsing
-      description: When given a url, checks if it is evil by safebrowsing and returns proper response
-      parameters:
-        - name: url_body
-          in: body
-          description: url to be checked
-          required: true
-          schema:
-            type: object
-            properties:
-              url:
-                type: string
-      responses:
-        200:
-          description: url's verdict
-
-  /verify/by_urlscan:
-    post:
-      operationId: api.verifier.verify_by_urlscan
-      tags:
-      - verify
-      summary: Check if malicious by urlscan
-      description: When given a domain, checks if it is evil by urlscan and returns proper response
+      summary: Check if phishing in safebrowsing
+      description: When given a url, checks if it is phishing by connecting to safebrowsing and returns proper response
       parameters:
         - name: url_body
           in: body
@@ -273,67 +273,131 @@ paths:
       responses:
         200:
           description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
+        401:
+          description: Unauthorized (authorization error at safebrowsing)
+
+  /verify/by_urlscan:
+    post:
+      operationId: api.verification.verify_by_urlscan
+      tags:
+      - verify
+      summary: Check if phishing in urlscan
+      description: When given a url, checks if it is phishing by connecting to urlscan and returns proper response
+      parameters:
+        - name: url_body
+          in: body
+          description: url to be checked
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+      responses:
+        200:
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
+        401:
+          description: Unauthorized (authorization error at urlscan)
 
 
   /verify/by_crt:
     post:
-      operationId: api.verifier.verify_by_crt
+      operationId: api.verification.verify_by_crt
       tags:
       - verify
-      summary: Check if malicious by crt.sh
-      description: When given a domain, checks if it is evil by crt.sh and returns proper response
+      summary: Check if phishing in crt.sh
+      description: When given a url, checks if it is phishing by connecting to crt.sh and returns proper response
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: url to be checked
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
 
   /verify/by_keywords:
     post:
-      operationId: api.verifier.verify_by_keywords
+      operationId: api.verification.verify_by_keywords
       tags:
       - verify
-      summary: Check if malicious by checking keywords' match
-      description: When given a domain, checks if it is evil by keywords' match and returns proper response
+      summary: Check if phishing by checking keywords' match
+      description: When given a url, checks if it is phishing by keywords' match and returns proper response
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: url to be checked
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
 
   /verify/by_whois:
     post:
-      operationId: api.verifier.verify_by_whois
+      operationId: api.verification.verify_by_whois
       tags:
       - verify
-      summary: Check if malicious by checking whois
-      description: When given a domain, checks if it is evil in whois and returns proper response
+      summary: Check if phishing by connecting to whois
+      description: When given a url, checks if it is phishing by connecting to whois and returns proper response
       parameters:
-        - name: domain_body
+        - name: url_body
           in: body
-          description: domain to be checked
+          description: url to be checked
           required: true
           schema:
             type: object
             properties:
-              domain:
+              url:
                 type: string
       responses:
         200:
-          description: Domain's verdict
+          description: URL's verdict
+        400:
+          description: Bad request (eg. wrong URL)
+
+  /server/add_keyword:
+    post:
+      operationId: api.main.add_keyword
+      tags:
+      - server
+      summary: Adds keyword
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: keyword
+          type: string
+          required: true 
+          description: A keyword to be added
+      responses:
+        200:
+          description: status
+        401:
+          description: Unauthorized
+      security:
+        - api_key: []
+
+securityDefinitions:
+  api_key:
+    type: apiKey
+    in: header
+    name: X-API-Key
+    x-apikeyInfoFunc: api.security.verify_api

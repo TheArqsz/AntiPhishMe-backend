@@ -6,4 +6,5 @@ class Const:
     URLSCAN_WAIT_SECONDS = 15 # sec
     URLSCAN_NOT_FINISHED_ERROR = 'URLSCAN not finished'
     URLSCAN_FINISHED_MESSAGE = 'URLSCAN finished'
-    UNKNOWN_RESULTS_MESSAGE = 'Unknown'
+    UNKNOWN_RESULTS_MESSAGE = 'Unknown results'
+    WRONG_DATA_MESSAGE = 'Wrong data'

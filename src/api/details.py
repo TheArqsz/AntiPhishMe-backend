@@ -1,25 +1,28 @@
 import json
 import jsonschema
+import logging as log
 
 from flask import jsonify, Response, request, json
 from datetime import datetime, timedelta, date
 from schemas.details_schema import *
-from messages.error_messages import error_message_helper
 
-from helpers import whois_helper, safebrowsing, crtsh, url_helper, urlscan
-from helpers import ip as ip_helper
+from api_modules import whois_module, safebrowsing, crtsh, urlscan, ip_module
 from helpers.consts import Const
+from helpers.url_helper import url_to_domain
 
-import logging as log
+from werkzeug.exceptions import BadRequest, Unauthorized
 
 def get_ip_details(): 
     request_data = request.get_json()
     try:
         jsonschema.validate(request_data, details_ip_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
-    details = ip.get_info(request_data.get('ip'))
+    details = ip_module.get_ip_details(request_data.get('ip'))
+    if not details:
+        raise BadRequest('Wrong IP')
+
     response_text = {
         "details": details
     }
@@ -29,19 +32,20 @@ def get_ip_details():
             ), 200, mimetype="application/json")
     
 
-def get_ip_details_by_domain(): 
+def get_ip_details_by_url(): 
     request_data = request.get_json()
     try:
-        jsonschema.validate(request_data, details_domain_schema)
+        jsonschema.validate(request_data, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
-    domain = url_helper.url_to_domain(request_data.get('domain'))
-    ip = ip_helper.get_ip(domain)
+    domain = url_to_domain(request_data.get('url'))
+    ip = ip_module.get_ip(domain)
     if ip:
-        details = ip_helper.get_ip_details(ip)
+        details = ip_module.get_ip_details(ip)
     else:
-        details = Const.UNKNOWN_RESULTS_MESSAGE
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+
     response_text = {
         "details": details
     }
@@ -54,15 +58,15 @@ def get_ip_details_by_domain():
 def get_whois_details():
     request_data = request.get_json()
     try:
-        jsonschema.validate(request_data, details_domain_schema)
+        jsonschema.validate(request_data, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
-    results = whois_helper.get_results(request_data.get('domain'))
+    domain = url_to_domain(request_data.get('url'))
+    results = whois_module.get_results(domain)
     if not results:
-        results = Const.UNKNOWN_RESULTS_MESSAGE
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
 
-    print(results)
     response_text = {
         "details": results
     }
@@ -76,18 +80,18 @@ def get_whois_details():
 def get_sfbrowsing_details():
     request_data = request.get_json()
     try:
-        jsonschema.validate(request_data, details_domain_schema)
+        jsonschema.validate(request_data, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
     try:
-        results = safebrowsing.lookup_url(request_data.get('domain'))
+        results = safebrowsing.lookup_url(request_data.get('url'))
     except safebrowsing.ApiKeyException as exc:
         log.error(exc)
-        return Response(error_message_helper(exc.message), 401, mimetype="application/json")
+        raise Unauthorized(exc.message)
 
     if not results:
-        results = Const.UNKNOWN_RESULTS_MESSAGE
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
 
     response_text = {
         "details": results
@@ -98,13 +102,14 @@ def get_sfbrowsing_details():
 def get_crtsh_details():
     request_data = request.get_json()
     try:
-        jsonschema.validate(request_data, details_domain_schema)
+        jsonschema.validate(request_data, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
-    results = crtsh.get_results(request_data.get('domain'))
+    domain = url_to_domain(request_data.get('url'))
+    results = crtsh.get_results(domain)
     if not results:
-        results = Const.UNKNOWN_RESULTS_MESSAGE
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
 
     response_text = {
         "details": results
@@ -119,7 +124,7 @@ def get_urlscan_details():
     try:
         jsonschema.validate(request_data, details_url_schema)
     except jsonschema.exceptions.ValidationError as exc:
-        return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+        raise BadRequest(exc.message)
 
     URL = request_data.get('url')
     historic_search, when_performed = urlscan.search_newest(URL)
@@ -133,14 +138,14 @@ def get_urlscan_details():
         try:
             url_id = urlscan.submit(URL)
         except urlscan.ApiKeyException as exc:
-            return Response(error_message_helper(exc.message), 401, mimetype="application/json")
+            raise Unauthorized(exc.message)
         except urlscan.UrlscanException as exc:
-            return Response(error_message_helper(exc.message), 400, mimetype="application/json")
+            raise BadRequest(exc.message)
 
 
         results = urlscan.results(url_id, wait_time=60)
         if not results:
-            results = Const.UNKNOWN_RESULTS_MESSAGE
+            raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
 
     response_text = {
         "details": results
