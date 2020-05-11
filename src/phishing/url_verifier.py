@@ -38,7 +38,6 @@ def verify_urlscan(URL, force_scan=False):
 
     if when_performed and when_performed > datetime.utcnow() - timedelta(days=time_delta):
         results = urlscan.results(historic_search.get('_id'))
-        log.debug(results)
         if results and results.get('malicious'):
             return True, Const.URLSCAN_FINISHED_MESSAGE
         else:
