@@ -36,7 +36,7 @@ def verify_urlscan(URL, force_scan=False):
     else:
         time_delta = Const.WEEK_DAYS
 
-    if when_performed and datetime.utcnow() - timedelta(days=time_delta) > when_performed:
+    if when_performed and when_performed > datetime.utcnow() - timedelta(days=time_delta):
         results = urlscan.results(historic_search.get('_id'))
         log.debug(results)
         if results and results.get('malicious'):
@@ -133,11 +133,11 @@ def verify_whois(domain):
     whois_results = whois.get_results(domain)
     if not whois_results:
         return False
-    elif not whois_results['name'] or not whois_results['org']:
-        return True
     else:
         creation_date = whois_results.get('creation_date')
-        if creation_date and creation_date > datetime.utcnow() - timedelta(days=Const.LIFE_LEN_PHISHING_CERT):
+        if creation_date and creation_date > datetime.utcnow() - timedelta(days=Const.LIFE_LEN_PHISHING_CERT) :
+            return True
+        elif not whois_results['name'] and not whois_results['org']:
             return True
         else:
             return False

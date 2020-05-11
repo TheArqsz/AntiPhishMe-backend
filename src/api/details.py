@@ -17,8 +17,12 @@ def get_ip_details(ip_body):
         jsonschema.validate(ip_body, details_ip_schema)
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
+    
+    ip = ip_body.get('ip')
+    if not ip or (ip and ip != ""):
+        raise BadRequest('Wrong IP')
 
-    details = ip_module.get_ip_details(ip_body.get('ip'))
+    details = ip_module.get_ip_details(ip)
     if not details:
         raise BadRequest('Wrong IP')
 
@@ -123,7 +127,7 @@ def get_urlscan_details(url_body):
     URL = url_body.get('url')
     historic_search, when_performed = urlscan.search_newest(URL)
     found = False
-    if when_performed and datetime.utcnow() - timedelta(days=Const.WEEK_DAYS) > when_performed:
+    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
         results = urlscan.results(historic_search.get('_id'))
         if results:
             found = True
