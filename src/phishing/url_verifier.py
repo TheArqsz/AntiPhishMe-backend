@@ -4,7 +4,7 @@ from models.baddies_model import Baddies
 from models.certs_model import Certs
 from models.goodies_model import Goodies
 
-from api_modules.safebrowsing import lookup_url
+from api_modules.safebrowsing import lookup_url, SafeBrowsingException
 from api_modules.levenstein import levenstein_check
 from api_modules.entropy import get_entropy
 from api_modules import urlscan
@@ -93,7 +93,10 @@ def verify_entropy(URL):
         return False
 
 def verify_safebrowsing(URL):
-    return lookup_url(URL).get('malicious')
+    try:
+        return lookup_url(URL).get('malicious')
+    except SafeBrowsingException:
+        return False
 
 def verify_certsh(domain):
     crt_results = crtsh.get_results(domain) 
