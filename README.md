@@ -32,3 +32,5 @@ At default, swaggerUI can be found at `localhost:5000/api/v1/ui`
 | HOST    | IP in which app will listen     | `127.0.0.1`, `0.0.0.0`    | `127.0.0.1` |
 | DOMAIN  | Domain's name for swagger. API requests use this as target  | `localhost:5000`. `example.com` | Same as `HOST:PORT` | 
 | BASE_PATH | Base path for swagger | `/api/v1` | `/api/v1` |
+| URLSCAN_API_KEY | API key for urlscan.io | `-` | `-` |
+| SAFEBROWSING_API_KEY | Base path for swagger | `-` | `-` |
