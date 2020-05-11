@@ -151,6 +151,7 @@ def verify_cert_hole(domain):
         return False
 
 def verify_all(URL):
+    log.debug(f"[URL_VERIFY] Validation for \"{URL}\"")
     domain = url_to_domain(URL)
     RAW_URL = URL
     URL = URL.replace("http://", '').replace("https://", '')
