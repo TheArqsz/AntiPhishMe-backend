@@ -102,7 +102,7 @@ def verify_certsh(domain):
                 malicious = c.get('is_bad') 
                 in_db = True
 
-    if not in_db and crt_results:
+    if not malicious and not in_db and crt_results:
         Certs.add_cert(
             _caid=crt_results.get('caid'), 
             _subject_organizationName=crt_results.get('subject').get('org_name'), 
@@ -111,17 +111,30 @@ def verify_certsh(domain):
             _registered_at=crt_results.get('registered_at'),
             _multi_dns=crt_results.get('multi_dns_amount')
         )
+    elif malicious and not in_db and crt_results:
+        Certs.add_cert(
+            _caid=crt_results.get('caid'), 
+            _subject_organizationName=crt_results.get('subject').get('org_name'), 
+            _subject_countryName=crt_results.get('subject').get('country'),
+            _issuer_commonName=crt_results.get('issuer').get('common_name'),
+            _registered_at=crt_results.get('registered_at'),
+            _multi_dns=crt_results.get('multi_dns_amount'),
+            _is_bad=True
+        )
     return malicious
 
 def verify_whois(domain):
     whois_results = whois.get_results(domain)
     if not whois_results:
         return False
-    creation = whois_results.get('creation_date')
-    if creation and creation > datetime.utcnow() - timedelta(days=Const.LIFE_LEN_PHISHING_CERT):
+    elif not whois_results['name'] or not whois_results['org']:
         return True
     else:
-        return False
+        creation_date = whois_results.get('creation_date')
+        if creation_date and creation_date > datetime.utcnow() - timedelta(days=Const.LIFE_LEN_PHISHING_CERT):
+            return True
+        else:
+            return False
 
 def verify_cert_hole(domain):
     if domain in ch.get_phishing_domains():
