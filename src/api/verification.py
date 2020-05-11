@@ -124,7 +124,7 @@ def verify_by_urlscan():
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    verify, _ = verify_urlscan(request_data.get('url'))
+    verify, _ = verify_urlscan(request_data.get('url'), force_scan=True)
     if verify:
         verdict = PhishLevel.MALICIOUS.get('status')
     else:

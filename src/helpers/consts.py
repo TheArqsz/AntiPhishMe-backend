@@ -1,4 +1,5 @@
 class Const:
+    DAY = 1
     WEEK_DAYS = 7
     FIVE_WEEK_DAYS = 5
     ENTROPY_PHISHING_MIN = 3.65

@@ -5,6 +5,6 @@ def match_keyword(domain):
     domain_phrases = domain.split('.')
     for phrase in domain_phrases:
         for keyword in good_keywords:
-            if keyword in phrase and keyword != phrase:
+            if keyword in phrase:
                 return True, keyword
     return False, None

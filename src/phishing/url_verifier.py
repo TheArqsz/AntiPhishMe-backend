@@ -30,7 +30,13 @@ def verify_domain_in_baddies(domain):
 
 def verify_urlscan(URL, force_scan=False):
     historic_search, when_performed = urlscan.search_newest(URL)
-    if not force_scan and when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
+    
+    if force_scan:
+        time_delta = Const.DAY
+    else:
+        time_delta = Const.WEEK_DAYS
+
+    if when_performed and datetime.utcnow() - timedelta(days=time_delta) > when_performed:
         results = urlscan.results(historic_search.get('_id'))
         log.debug(results)
         if results and results.get('malicious'):
