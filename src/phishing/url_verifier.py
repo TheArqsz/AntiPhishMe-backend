@@ -28,11 +28,11 @@ def verify_domain_in_baddies(domain):
             continue
     return False
 
-def verify_urlscan(URL, force_scan=False):
+def verify_urlscan(URL, passive=False, urlscan_wait_time=Const.URLSCAN_WAIT_SECONDS):
     historic_search, when_performed = urlscan.search_newest(URL)
     
-    if force_scan:
-        time_delta = Const.DAY
+    if passive:
+        time_delta = 3 * Const.DAY
     else:
         time_delta = Const.WEEK_DAYS
 
@@ -42,13 +42,13 @@ def verify_urlscan(URL, force_scan=False):
             return True, Const.URLSCAN_FINISHED_MESSAGE
         else:
             return False, Const.URLSCAN_FINISHED_MESSAGE
-    else:
+    elif not passive:
         log.debug('[URL_VERIFY] Force scanning URL')
         try:
             url_id = urlscan.submit(URL)
         except urlscan.UrlscanException:
             return False, Const.URLSCAN_NOT_FINISHED_ERROR
-        results = urlscan.results(url_id)
+        results = urlscan.results(url_id, wait_time=urlscan_wait_time)
         if results:
             if results.get('malicious'):
                 return True, Const.URLSCAN_FINISHED_MESSAGE
@@ -56,6 +56,8 @@ def verify_urlscan(URL, force_scan=False):
                 return False, Const.URLSCAN_FINISHED_MESSAGE
         else:
             return False, Const.URLSCAN_NOT_FINISHED_ERROR
+    else:
+        return False, Const.URLSCAN_NOT_FINISHED_ERROR
 
 def verify_levenstein(domain):
     """
@@ -164,7 +166,7 @@ def verify_all(URL):
         sf_verdict = verify_safebrowsing(RAW_URL)
         crt_verdict = verify_certsh(domain)
         whois_verdict = verify_whois(domain)
-        urlscan_verdict, urlscan_message = verify_urlscan(RAW_URL)
+        urlscan_verdict, urlscan_message = verify_urlscan(RAW_URL, passive=True)
         leven_verdict = verify_levenstein(domain)
         entropy_verdict = verify_entropy(URL)
         keyword_match_verdict = verify_keyword_match(domain)
