@@ -275,6 +275,8 @@ paths:
       responses:
         200:
           description: Database's status
+        401:
+          description: Unauthorized
       security:
         - api_key: []
 
