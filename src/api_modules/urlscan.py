@@ -49,7 +49,6 @@ def search(url):
     )
     response = requests.get('https://urlscan.io/api/v1/search/', params=params)
     r = response.json()
-    time.sleep(2)
     if r.get("total", 0) > 0:
         return r.get("results")
     else:
@@ -75,14 +74,14 @@ def results(uuid, wait_time=Const.URLSCAN_WAIT_SECONDS):
         response = requests.get(f"https://urlscan.io/api/v1/result/{uuid}")
         null_response_string = '{\n  "message": "Not Found",\n  "description": "We could not find this page",\n  "status": 404\n}'
         r = response.content.decode("utf-8")
-        if null_response_string == r:
+        if response.status_code != 200 or null_response_string == r:
             logging.debug(f"[URLSCAN] Results for {uuid} not processed. Please check again later.")
             time.sleep(2)
             duration += 2
+            continue
         else:
             found = True
             logging.debug(f"[URLSCAN] Results for {uuid} processed after {duration} sec.")
-            j = response.json()
             return summary(response.json())
     return None
 

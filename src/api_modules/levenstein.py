@@ -13,7 +13,7 @@ def levenstein_check(keywords, phrases_to_check):
     }
     Do not compare if given keyword is same as phrase
     If length of keyword is less than 2 * legth of phrase
-        and length of phrase is longer than 2 (to exclude eg 'wp' or 'pl')
+        and length of phrase is longer than 3 (to exclude eg 'wp' or 'pl')
         and levenstein's distance is less than 3 and more than 0
         then increase lev's amount for keyword
     If amount of matches for a phrase from domain is less than half of amount of phrases
