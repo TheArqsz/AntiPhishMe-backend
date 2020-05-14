@@ -26,7 +26,8 @@ def levenstein_check(keywords, phrases_to_check):
     for keyword in keywords:
         levs[keyword] = {
             'hits': 0,
-            'match_keyword': ''
+            'match_keyword': '',
+            'lev_dist': 0
         }
     for keyword in keywords:
         for phrase in phrases_to_check:
@@ -37,11 +38,12 @@ def levenstein_check(keywords, phrases_to_check):
             and 0 < calculate_levenstein(keyword, phrase) < 3: 
                 levs[keyword]['hits'] += 1
                 levs[keyword]['match_keyword'] = keyword
+                levs[keyword]['lev_dist'] = calculate_levenstein(keyword, phrase)
             else:
                 continue
     for key in levs:
         if levs[key]['hits'] != 0 and levs[key]['hits'] <= int(len(phrases_to_check) / 2):
-            return True, levs[key]['hits'], levs[key]['match_keyword']
+            return True, levs[key]['hits'], levs[key]['match_keyword'], levs[key]['lev_dist']
         else:
             continue
-    return False, None, None
+    return False, None, None, None

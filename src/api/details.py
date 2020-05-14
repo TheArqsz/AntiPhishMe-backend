@@ -6,9 +6,11 @@ from flask import Response
 from datetime import datetime, timedelta, date
 from schemas.details_schema import *
 
-from api_modules import whois_module, safebrowsing, crtsh, urlscan, ip_module
+from api_modules import whois_module, safebrowsing, crtsh, urlscan, ip_module, levenstein, keywords
 from helpers.consts import Const
 from helpers.url_helper import url_to_domain
+
+from models.goodies_model import Goodies
 
 from werkzeug.exceptions import BadRequest, Unauthorized
 
@@ -152,6 +154,52 @@ def get_urlscan_details(url_body):
             response_text,
             default=_default_json_model
             ), 200, mimetype="application/json")
+
+def get_levenstein_details(url_body):
+    try:
+        jsonschema.validate(url_body, details_url_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        raise BadRequest(exc.message)
+
+    domain = url_to_domain(url_body.get('url'))
+    good_keywords = [k['good_keyword'] for k in Goodies.get_all_goodies()]
+    domain_phrases = domain.split('.')
+    _, _, lev_keyword, lev_dist = levenstein.levenstein_check(good_keywords, domain_phrases)
+    if not lev_keyword:
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+
+    response_text = {
+        "details": {
+            "matched_keyword": lev_keyword,
+            "levenstein_distance": lev_dist
+        }
+    }
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
+
+def get_keyword_details(url_body):
+    try:
+        jsonschema.validate(url_body, details_url_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        raise BadRequest(exc.message)
+
+    domain = url_to_domain(url_body.get('url'))
+    _, keyword = keywords.match_keyword(domain)
+    if not keyword:
+        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+
+    response_text = {
+        "details": {
+            "matched_keyword": keyword
+        }
+    }
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
+            
 
 def _default_json_model(o):
     if isinstance(o, (date, datetime)):

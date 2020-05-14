@@ -224,6 +224,56 @@ paths:
         400:
           description: Bad request (eg. wrong URL)
 
+  /details/levenstein:
+    post:
+      operationId: api.details.get_levenstein_details
+      tags:
+      - details
+      summary: Returns results from levenstein calculations
+      description: When given an url, calculates it's levenstein distance and if matched - return details
+      parameters:
+        - name: url_body
+          in: body
+          description: url for which levenstein would be calculated
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string     
+      responses:
+        200:
+          description: URL's details from levenstein
+          schema:
+            $ref: '#/definitions/DetailsByLevenstein'
+        400:
+          description: Bad request (eg. wrong URL)
+
+  /details/keywords:
+    post:
+      operationId: api.details.get_keyword_details
+      tags:
+      - details
+      summary: Returns results from matched keywords
+      description: When given an url, check matched keywords and if matched - return details
+      parameters:
+        - name: url_body
+          in: body
+          description: url for which keywords would be compared
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string     
+      responses:
+        200:
+          description: URL's details from keywords
+          schema:
+            $ref: '#/definitions/DetailsByKeyword'
+        400:
+          description: Bad request (eg. wrong URL)
+
   /verify/by_levenstein:
     post:
       operationId: api.verification.verify_by_levenstein
@@ -610,9 +660,29 @@ definitions:
           malicious:
             type: boolean
             description: Verdict whether url is malicious/phishing
-          
-
-
+  DetailsByLevenstein:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          matched_keyword:
+            type: string
+            description: Matched levenstein keyword
+          levenstein_distance:
+            type: integer
+            description: Levenstein distance
+  DetailsByKeyword:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          matched_keyword:
+            type: string
+            description: Matched keyword
 
 securityDefinitions:
   api_key:
