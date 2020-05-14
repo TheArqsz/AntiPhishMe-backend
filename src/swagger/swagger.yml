@@ -274,6 +274,31 @@ paths:
         400:
           description: Bad request (eg. wrong URL)
 
+  /details/entropy:
+    post:
+      operationId: api.details.get_entropy_details
+      tags:
+      - details
+      summary: Returns results from entropy
+      description: When given an url, calculates its entropy - return details
+      parameters:
+        - name: url_body
+          in: body
+          description: url for which entropy would be calculated
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string     
+      responses:
+        200:
+          description: URL's details from keywords
+          schema:
+            $ref: '#/definitions/DetailsByEntropy'
+        400:
+          description: Bad request (eg. wrong URL)
+
   /verify/by_levenstein:
     post:
       operationId: api.verification.verify_by_levenstein
@@ -403,7 +428,6 @@ paths:
           description: Bad request (eg. wrong URL)
         401:
           description: Unauthorized (authorization error at urlscan)
-
 
   /verify/by_crt:
     post:
@@ -683,6 +707,16 @@ definitions:
           matched_keyword:
             type: string
             description: Matched keyword
+  DetailsByEntropy:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          entropy:
+            type: number
+            description: Calculated entropy
 
 securityDefinitions:
   api_key:

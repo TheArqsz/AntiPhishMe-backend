@@ -6,7 +6,7 @@ from flask import Response
 from datetime import datetime, timedelta, date
 from schemas.details_schema import *
 
-from api_modules import whois_module, safebrowsing, crtsh, urlscan, ip_module, levenstein, keywords
+from api_modules import whois_module, safebrowsing, crtsh, urlscan, ip_module, levenstein, keywords, entropy
 from helpers.consts import Const
 from helpers.url_helper import url_to_domain
 
@@ -200,7 +200,24 @@ def get_keyword_details(url_body):
             default=_default_json_model
             ), 200, mimetype="application/json")
             
+def get_entropy_details(url_body):
+    try:
+        jsonschema.validate(url_body, details_url_schema)
+    except jsonschema.exceptions.ValidationError as exc:
+        raise BadRequest(exc.message) 
+    
+    calculated = entropy.get_entropy(url_body.get('url'))
 
+    response_text = {
+        "details": {
+            "entropy": round(calculated, 2)
+        }
+    }
+    return Response(json.dumps(
+            response_text,
+            default=_default_json_model
+            ), 200, mimetype="application/json")
+            
 def _default_json_model(o):
     if isinstance(o, (date, datetime)):
         return o.isoformat()
