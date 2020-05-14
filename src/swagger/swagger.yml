@@ -39,6 +39,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -64,6 +66,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -110,6 +114,8 @@ paths:
       responses:
         200:
           description: URL's IP's details
+          schema:
+            $ref: '#/definitions/DetailsIPByDomain'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -133,6 +139,8 @@ paths:
       responses:
         200:
           description: Domain's details from urlscan
+          schema:
+            $ref: '#/definitions/DetailsByUrlscan'
         400:
           description: Bad request (eg. wrong URL)
         401:
@@ -158,6 +166,8 @@ paths:
       responses:
         200:
           description: URL's details from safebrowsing
+          schema:
+            $ref: '#/definitions/DetailsBySafe'
         400:
           description: Bad request (eg. wrong URL)
         401:
@@ -184,6 +194,8 @@ paths:
       responses:
         200:
           description: Domain's details from crtsh
+          schema:
+            $ref: '#/definitions/DetailsCrtSh'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -207,6 +219,8 @@ paths:
       responses:
         200:
           description: URL's details from whois
+          schema:
+            $ref: '#/definitions/DetailsByWhois'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -230,6 +244,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -253,6 +269,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -265,6 +283,8 @@ paths:
       responses:
         200:
           description: Server's status
+          schema:
+            $ref: '#/definitions/ServerHealth'
 
   /server/create_db:
     get:
@@ -300,6 +320,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
         401:
@@ -325,6 +347,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
         401:
@@ -351,6 +375,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -374,6 +400,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -397,6 +425,8 @@ paths:
       responses:
         200:
           description: URL's verdict
+          schema:
+            $ref: '#/definitions/Verify'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -417,12 +447,172 @@ paths:
       responses:
         200:
           description: Status
+          schema:
+            $ref: '#/definitions/ServerAddKeyword'
         400:
           description: Bad request (eg. keyword too short)
         401:
           description: Unauthorized
       security:
         - api_key: []
+        
+definitions:
+  ServerHealth:
+    type: object
+    properties:
+      db_status:
+        type: string
+        description: Database status.
+      server_status:
+        type: string
+        description: Server status.
+  ServerAddKeyword:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Action's status.
+  Verify:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Given value's validation  
+  DetailsCrtSh:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          caid:
+            type: integer
+            description: Certificate's id
+          registered_at:
+            type: string
+            format: dateTime
+            description: Certificate's date of registration
+          subject:
+            type: object
+            description: Cert's subject
+            properties:
+              org_name:
+                type: string
+                description: Subject's organization name
+              country:
+                type: string
+                description: Subject's country
+          issuer:
+            type: object
+            description: Cert's issuer
+            properties:
+              common_name: 
+                type: string
+                description: Issuer's common name
+          multi_dns_amount:
+            type: integer
+            description: Amount of domains registered with the same cert
+  DetailsIPByDomain:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          country:
+            type: string
+            description: Domain's IP's country
+          ip:
+            type: string
+            description: Domain's IP
+          asn:
+            type: string
+            description: Domain's IP's ASN
+  DetailsByUrlscan:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          domain:
+            type: string
+            description: Domain
+          ip:
+            type: string
+            description: Domain's IP
+          country:
+            type: string
+            description: Domain's country
+          server:
+            type: string
+            description: Domain's type of server
+          webApps:
+            type: array
+            description: Web apps used at website
+            items:
+              type: string
+          no_of_requests:
+            type: integer
+            description: Number of requests sent by website when entered
+          ads_blocked:
+            type: integer
+            description: Amount of ads blocked
+          https_requests:
+            type: string
+            description: Percentage of https requests sent by website
+          ipv6:
+            type: string
+            description: Percentage of ipv6 requests sent by website
+          unique_country_count:
+            type: integer
+            description: Amount of countries which ip's website is requesting
+          malicious:
+            type: boolean
+            description: Verdict whether domain is malicious/phishing
+          malicious_requests:
+            type: integer
+            description: Amount of malicious requests
+          pointed_domains:
+            type: integer
+            description: Amount of third-party domains requested by website
+  DetailsByWhois:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          registrar:
+            type: string
+            description: Subject that registered Certificate
+          creation_date:
+            type: string
+            format: dateTime
+            description: Date when certificate was added to cert.sh database
+          name:
+            type: string
+          org:
+            type: string
+          country:
+            type: string
+            description: Certificate's country
+  DetailsBySafe:
+    type: object
+    properties:
+      details:
+        type: object
+        description: Given value's details
+        properties:
+          url:
+            type: string
+            description: Given URL
+          malicious:
+            type: boolean
+            description: Verdict whether url is malicious/phishing
+          
+
+
 
 securityDefinitions:
   api_key:
