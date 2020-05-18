@@ -650,6 +650,12 @@ definitions:
           pointed_domains:
             type: integer
             description: Amount of third-party domains requested by website
+          unique_countries_connected:
+            type: array
+            description: Unique list of countries that website connects to
+            items:
+              type: string
+              description: Country name
   DetailsByWhois:
     type: object
     properties:

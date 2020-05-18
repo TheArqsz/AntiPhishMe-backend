@@ -129,7 +129,7 @@ def get_urlscan_details(url_body):
     URL = url_body.get('url')
     historic_search, when_performed = urlscan.search_newest(URL)
     found = False
-    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.WEEK_DAYS):
+    if when_performed and when_performed > datetime.utcnow() - timedelta(days=Const.DAY):
         results = urlscan.results(historic_search.get('_id'))
         if results:
             found = True

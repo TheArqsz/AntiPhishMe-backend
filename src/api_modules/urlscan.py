@@ -63,7 +63,9 @@ def search_newest(url):
     res = search(url)
     if res:
         sorted_res = sorted(res, key=lambda k: datetime.strptime(k['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"), reverse=True)
-        return sorted_res[0], datetime.strptime(sorted_res[0]['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"),
+        for res in sorted_res:
+            if res['task']['url'].strip('http://').strip('https://') == url.strip('http://').strip('https://'):
+                return res, datetime.strptime(res['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"),
     else:
         return None, None
 
@@ -104,12 +106,11 @@ def summary(content):
     ip_info = stats_info.get("ipStats")
 
     ### enumerate countries 
-    countries = []
+    countries = set()
     for item in resource_info:
         country_list = item.get("countries")
         for country in country_list:
-            if country not in countries:
-                countries.append(country)
+            countries.add(country)
 
     ### enumerate web apps
     web_apps = []
@@ -154,5 +155,6 @@ def summary(content):
     results['malicious'] = is_malicious
     results['malicious_requests'] = malicious_total
     results['pointed_domains'] = malicious_total
+    results['unique_countries_connected'] = list(countries)
 
     return results
