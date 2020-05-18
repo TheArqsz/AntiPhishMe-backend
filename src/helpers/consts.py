@@ -9,3 +9,4 @@ class Const:
     URLSCAN_FINISHED_MESSAGE = 'URLSCAN finished'
     UNKNOWN_RESULTS_MESSAGE = 'Unknown results'
     WRONG_DATA_MESSAGE = 'Wrong data'
+    EMPTY_RESPONSE_MESSAGE = 'Correct request but it returned no data'

@@ -116,6 +116,10 @@ paths:
           description: URL's IP's details
           schema:
             $ref: '#/definitions/DetailsIPByDomain'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -168,6 +172,10 @@ paths:
           description: URL's details from safebrowsing
           schema:
             $ref: '#/definitions/DetailsBySafe'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
         401:
@@ -196,6 +204,10 @@ paths:
           description: Domain's details from crtsh
           schema:
             $ref: '#/definitions/DetailsCrtSh'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -221,6 +233,10 @@ paths:
           description: URL's details from whois
           schema:
             $ref: '#/definitions/DetailsByWhois'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -246,6 +262,10 @@ paths:
           description: URL's details from levenstein
           schema:
             $ref: '#/definitions/DetailsByLevenstein'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -271,6 +291,10 @@ paths:
           description: URL's details from keywords
           schema:
             $ref: '#/definitions/DetailsByKeyword'
+        202:
+          description: Response if no data is returned
+          schema:
+            $ref: '#/definitions/EmptyResponse'
         400:
           description: Bad request (eg. wrong URL)
 
@@ -723,6 +747,13 @@ definitions:
           entropy:
             type: number
             description: Calculated entropy
+  EmptyResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Response's message
+
 
 securityDefinitions:
   api_key:

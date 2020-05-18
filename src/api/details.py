@@ -12,7 +12,7 @@ from helpers.url_helper import url_to_domain
 
 from models.goodies_model import Goodies
 
-from werkzeug.exceptions import BadRequest, Unauthorized
+from werkzeug.exceptions import BadRequest, Unauthorized, HTTPException
 
 def get_ip_details(ip_body): 
     try:
@@ -21,7 +21,7 @@ def get_ip_details(ip_body):
         raise BadRequest(exc.message)
     
     ip = ip_body.get('ip')
-    if not ip or (ip and ip != ""):
+    if not ip or ip == "":
         raise BadRequest('Wrong IP')
 
     details = ip_module.get_ip_details(ip)
@@ -48,7 +48,7 @@ def get_ip_details_by_url(url_body):
     if ip:
         details = ip_module.get_ip_details(ip)
     else:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": details
@@ -68,7 +68,7 @@ def get_whois_details(url_body):
     domain = url_to_domain(url_body.get('url'))
     results = whois_module.get_results(domain)
     if not results:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": results
@@ -93,7 +93,7 @@ def get_sfbrowsing_details(url_body):
         raise Unauthorized(exc.message)
 
     if not results:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": results
@@ -110,7 +110,7 @@ def get_crtsh_details(url_body):
     domain = url_to_domain(url_body.get('url'))
     results = crtsh.get_results(domain)
     if not results:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": results
@@ -145,7 +145,7 @@ def get_urlscan_details(url_body):
 
         results = urlscan.results(url_id, wait_time=60)
         if not results:
-            raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+            return _no_data_response()
 
     response_text = {
         "details": results
@@ -166,7 +166,7 @@ def get_levenstein_details(url_body):
     domain_phrases = domain.split('.')
     _, _, lev_keyword, lev_dist = levenstein.levenstein_check(good_keywords, domain_phrases)
     if not lev_keyword:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": {
@@ -188,7 +188,7 @@ def get_keyword_details(url_body):
     domain = url_to_domain(url_body.get('url'))
     _, keyword = keywords.match_keyword(domain)
     if not keyword:
-        raise BadRequest(Const.UNKNOWN_RESULTS_MESSAGE)
+        return _no_data_response()
 
     response_text = {
         "details": {
@@ -221,3 +221,12 @@ def get_entropy_details(url_body):
 def _default_json_model(o):
     if isinstance(o, (date, datetime)):
         return o.isoformat()
+
+def _no_data_response(message=Const.EMPTY_RESPONSE_MESSAGE):
+    resp = {
+        'message': message
+    }
+    return Response(json.dumps(
+            resp,
+            default=_default_json_model
+            ), 202, mimetype="application/json")
