@@ -64,11 +64,12 @@ def search_newest(url):
     if res:
         sorted_res = sorted(res, key=lambda k: datetime.strptime(k['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"), reverse=True)
         for res in sorted_res:
-            if res['task']['url'].strip('http://').strip('https://') == url.strip('http://').strip('https://'):
+            if res['task']['url'].strip('http://').strip('https://').strip('www.') == url.strip('http://').strip('https://').strip('www.'):
                 return res, datetime.strptime(res['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"),
     else:
-        return None, None
-
+        return dict(), None
+    return dict(), None
+    
 def results(uuid, wait_time=Const.URLSCAN_WAIT_SECONDS):
     found = False
     duration = 0
