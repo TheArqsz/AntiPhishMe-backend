@@ -14,7 +14,7 @@ ENVIRONMENT = os.getenv('ENV', 'dev')
 LOCAL_ENVIRONMENTS = ['dev', 'develop', 'local']
 DOCKER_LOCAL_ENVIRONMENTS = ['docker_dev', 'docker_develop', 'docker_local'] 
 
-AUTH_API_KEY = os.getenv('AUTH_API_KEY', 'test_api_key_978675645342312')
+AUTH_API_KEY = os.getenv('AUTH_API_KEY', 'test_api_key')
 
 # Basic connexion app
 connexion_app = connexion.App(__name__, specification_dir=SWAGGER_DIR)
