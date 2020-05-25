@@ -5,10 +5,11 @@ install:
   - pip install -r requirements.txt
   - pip install codecov
 script: >
-    pytest
-        --cov=src/tests/ 
-        --alluredir ./src/tests/results --clean-alluredir 
-        --disable-pytest-warnings --cache-clear 
-        ./src/tests/
+    pytest \
+    --cov=src/tests/  \
+    --alluredir ./src/tests/results --clean-alluredir \
+    --disable-pytest-warnings --cache-clear \
+    ./src/tests/
+
 after_success:
     - codecov
