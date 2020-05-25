@@ -109,7 +109,8 @@ def summary(content):
     ### enumerate countries 
     countries = set()
     for item in resource_info:
-        country_list = item.get("countries")
+        ## remove empty fields
+        country_list = list(filter(None, item.get("countries")))
         for country in country_list:
             countries.add(country)
 
@@ -135,7 +136,7 @@ def summary(content):
     ads_blocked = stats_info.get("adBlocked")
     https_percentage = stats_info.get("securePercentage")
     ipv6_percentage = stats_info.get("IPv6Percentage")
-    country_count = stats_info.get("uniqCountries")
+    country_count = len(countries)
     num_requests = len(request_info)
     is_malicious = verdict_info.get("overall").get("malicious")
     malicious_total = verdict_info.get("engines").get("maliciousTotal")
