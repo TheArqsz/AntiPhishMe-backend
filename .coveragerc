@@ -1,0 +1,2 @@
+[run]
+omit = */__init__.py, */conftest.py, src/tests/test_helpers.py 

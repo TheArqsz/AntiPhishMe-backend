@@ -12,6 +12,7 @@ click==7.1.1
 clickclick==1.2.2
 configparser==5.0.0
 connexion==2.6.0
+coverage==5.1
 distlib==0.3.0
 domaintools==0.3.8
 filelock==3.0.12
@@ -49,6 +50,7 @@ pyparsing==2.4.7
 pyrsistent==0.16.0
 pysafebrowsing==0.1.1
 pytest==5.4.2
+pytest-cov==2.9.0
 python-dateutil==2.8.0
 python-Levenshtein==0.12.0
 python-whois==0.7.2
