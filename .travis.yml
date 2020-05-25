@@ -16,7 +16,7 @@ notifications:
         on_success: always  # change: send a notification when the build status changes.
         on_failure: always  # always: always send a notification.
         template:
-            - "Repozytorium `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) commit (<%{compare_url}|%{commit}>) branch `%{branch}`."
-            - "Czas wykonania: *%{duration}*"
-            - "Informacja: %{message}"
+            - "Repository `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) branch `%{branch}`."
+            - "Execution time: *%{duration}*"
+            - "Message: %{message}"
     email: false
