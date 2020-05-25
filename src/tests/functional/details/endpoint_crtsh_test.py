@@ -11,20 +11,20 @@ from tests.test_helpers import (
     assert_dict_contains_key
 )
 
-@allure.epic("Verify")
+@allure.epic("Details")
 @allure.parent_suite("Functional")
-@allure.suite("Verify")
-@allure.sub_suite("CertHole")
+@allure.suite("Details")
+@allure.sub_suite("crt.sh")
 class Tests:
 
     @allure.description("""
-    Test endpoint "/verify/by_cert_hole"
+    Test endpoint "/details/crtsh"
 
     Send correct data.
     """)
-    def test_verify_by_cert_hole(self, client_with_db):
+    def test_details_crtsh(self, client_with_db):
         client = client_with_db[0]
-        endpoint = '/verify/by_cert_hole'
+        endpoint = '/details/crtsh'
         data = {
             'url': 'example.com'
         }
@@ -33,21 +33,35 @@ class Tests:
         }
         info("POST {}".format(endpoint))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
-        j = data_to_json(response.data)
         assert_equal(response.status_code, 200, "Check status code")
-        field = "result"
-        expected_value = "good"
+        j = data_to_json(response.data)
+        field = "details"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
+        field = "caid"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "registered_at"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "subject"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "org_name"
+        assert_dict_contains_key(j['details']['subject'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "country"
+        assert_dict_contains_key(j['details']['subject'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "issuer"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "common_name"
+        assert_dict_contains_key(j['details']['issuer'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = "multi_dns_amount"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
 
     @allure.description("""
-    Test endpoint "/verify/by_cert_hole"
+    Test endpoint "/details/crtsh"
 
-    Send wrong data and except error.
+    Send wrong data and expect error.
     """)
-    def test_verify_by_cert_hole_wrong_data(self, client_with_db):
+    def test_details_crtsh_wrong_data(self, client_with_db):
         client = client_with_db[0]
-        endpoint = '/verify/by_cert_hole'
+        endpoint = '/details/crtsh'
         data = {
             'temp': 'example.com'
         }

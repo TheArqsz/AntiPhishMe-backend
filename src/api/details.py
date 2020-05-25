@@ -142,7 +142,6 @@ def get_urlscan_details(url_body):
         except urlscan.UrlscanException as exc:
             raise BadRequest(exc.message)
 
-
         results = urlscan.results(url_id, wait_time=60)
         if not results:
             return _no_data_response()

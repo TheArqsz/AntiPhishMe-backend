@@ -1,6 +1,6 @@
 import pytest
 import allure
-
+import random
 from hamcrest import * 
 from config import logging as log
 from json import loads, JSONDecodeError
@@ -61,4 +61,5 @@ def assert_dict_contains_key(d, key, message=None):
 def get_test_phishing_domain():
     __tracebackhide__ = True
     ch = CertHole()
-    return ch.get_data('txt')[0].domain_address
+    l = ch.get_data('txt')
+    return (random.choice(l)).domain_address

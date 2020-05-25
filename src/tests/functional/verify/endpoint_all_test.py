@@ -35,5 +35,5 @@ class Tests:
         assert_equal(response.status_code, 200, "Check status code")
         field = "result"
         expected_value = "good"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))

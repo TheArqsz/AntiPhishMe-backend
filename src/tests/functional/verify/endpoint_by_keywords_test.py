@@ -22,7 +22,7 @@ class Tests:
 
     Send correct data.
     """)
-    def test_verify_by_entropy(self, client_with_db):
+    def test_verify_by_keywords(self, client_with_db):
         client = client_with_db[0]
         endpoint = '/verify/by_keywords'
         data = {
@@ -37,8 +37,8 @@ class Tests:
         j = data_to_json(response.data)
         field = "status"
         expected_value = "good"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
     Test endpoint "/verify/by_keywords"
@@ -60,9 +60,9 @@ class Tests:
         assert_equal(response.status_code, 400, "Check status code")
         field = "detail"
         expected_value = "'url' is a required property"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = "title"
         expected_value = "Bad Request"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))

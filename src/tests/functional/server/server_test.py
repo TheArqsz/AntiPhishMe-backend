@@ -46,12 +46,12 @@ class Tests:
         j = data_to_json(response.data)
         field = "db_status"
         expected_value = "OK"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = "server_status"
         expected_value = "OK"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
     Test endpoint "/server/create_db" with basic auth
@@ -68,8 +68,8 @@ class Tests:
         j = data_to_json(response.data)
         field = "message"
         expected_value = "Database created."
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
     Test endpoint "/server/add_keyword" with basic auth
@@ -95,8 +95,8 @@ class Tests:
         assert_equal(response.status_code, 200, "Check status code")
         field = "status"
         expected_value = "OK"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
     Test endpoint "/server/add_keyword" with basic auth
@@ -124,13 +124,13 @@ class Tests:
         assert_equal(response.status_code, 400, "Check status code")
         field = "detail"
         expected_value = "Keyword too short - min 4 signs"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = "status"
         expected_value = 400
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = "title"
         expected_value = "Bad Request"
-        assert_dict_contains_key(j, field, "Check if dict contains given key")
-        assert_equal(j[field], expected_value, "Check {} == {}".format(field, expected_value))
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))

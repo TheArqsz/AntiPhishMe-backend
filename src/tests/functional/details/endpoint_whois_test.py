@@ -7,7 +7,6 @@ from config import (
 )
 from tests.test_helpers import (
     data_to_json, 
-    get_test_phishing_domain,
     info, 
     assert_equal, 
     assert_dict_contains_key
@@ -15,22 +14,23 @@ from tests.test_helpers import (
 
 from os import getenv
 
-@allure.epic("Verify")
+@allure.epic("Details")
 @allure.parent_suite("Functional")
-@allure.suite("Verify")
+@allure.suite("Details")
 @allure.sub_suite("who.is")
 class Tests:
 
     @allure.description("""
-    Test endpoint "/verify/by_whois"
+    Test endpoint "/details/whois"
 
     Send correct data.
     """)
-    def test_verify_by_whois(self, client_with_db):
+    def test_details_whois(self, client_with_db):
         client = client_with_db[0]
-        endpoint = '/verify/by_whois'
+        endpoint = '/details/whois'
+        url = 'example.com'
         data = {
-            'url': 'google.com'
+            'url': "{}".format(url)
         }
         headers = {
             'Content-Type': "application/json"
@@ -39,48 +39,27 @@ class Tests:
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
-        field = "status"
-        expected_value = "good"
+        field = "details"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
-
-    @allure.description_html("""
-    <h5>Test endpoint "/verify/by_whois"</h5>
-
-    <h5>Send correct malicious data.</h5>
-
-    <h4> Skip if env. variable not set</h2>
-    """)
-    def test_verify_by_whois_malicious(self, client_with_db):
-        client = client_with_db[0]
-        endpoint = '/verify/by_whois'
-        malicious_url = get_test_phishing_domain()
-        info("URL sent - {}".format(malicious_url))
-        data = {
-            'url': '{}'.format(malicious_url)
-        }
-        headers = {
-            'Content-Type': "application/json"
-        }
-        info("POST {}".format(endpoint))
-        response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
-        assert_equal(response.status_code, 200, "Check status code")
-        j = data_to_json(response.data)
-        field = "status"
-        expected_value = "malicious"
-        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        if j[field] == "good":
-            pytest.skip("who.is returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
-        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
+        field = "registrar"
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = 'creation_date'
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = 'name'
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = 'org'
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
+        field = 'country'
+        assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
 
     @allure.description("""
-    Test endpoint "/verify/by_whois"
+    Test endpoint "/details/whois"
 
     Send wrong data and expect error.
     """)
-    def test_verify_by_whois_wrong_data(self, client_with_db):
+    def test_details_safebrowsing_wrong_data(self, client_with_db):
         client = client_with_db[0]
-        endpoint = '/verify/by_whois'
+        endpoint = '/details/whois'
         data = {
             'temp': 'example.com'
         }
@@ -97,5 +76,28 @@ class Tests:
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = "title"
         expected_value = "Bad Request"
+        assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
+        assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
+
+    @allure.description("""
+    Test endpoint "/details/whois"
+
+    Send wrong data and expect error.
+    """)
+    def test_details_safebrowsing_wrong_url(self, client_with_db):
+        client = client_with_db[0]
+        endpoint = '/details/whois'
+        data = {
+            'url': 'o'
+        }
+        headers = {
+            'Content-Type': "application/json"
+        }
+        info("POST {}".format(endpoint))
+        response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
+        j = data_to_json(response.data)
+        assert_equal(response.status_code, 202, "Check status code")
+        field = "message"
+        expected_value = "Correct request but it returned no data"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
