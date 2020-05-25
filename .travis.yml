@@ -1,0 +1,6 @@
+language: python
+python:
+  - "3.8"
+install:
+  - pip install --user -r requirements.txt
+script: pytest --alluredir ./src/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./src/tests/
