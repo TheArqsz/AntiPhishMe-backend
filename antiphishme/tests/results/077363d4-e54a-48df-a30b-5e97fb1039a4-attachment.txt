@@ -1,2 +1,0 @@
-[root INFO 26-May-20 17:08:32]  [STEP] URL sent - dotpay.e-dpd.pl
-[root INFO 26-May-20 17:08:32]  [STEP] POST /details/urlscan

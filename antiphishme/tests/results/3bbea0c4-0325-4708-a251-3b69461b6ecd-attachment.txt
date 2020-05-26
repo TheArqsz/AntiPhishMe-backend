@@ -1,8 +1,0 @@
-[root INFO 26-May-20 17:08:27]  [STEP] POST /details/keywords
-[root INFO 26-May-20 17:08:27]  <class 'dict'>
-[root INFO 26-May-20 17:08:27]  Real value is: 202
-[root INFO 26-May-20 17:08:27]  Expected value is: 202
-[root INFO 26-May-20 17:08:27]  Key is: message
-[root INFO 26-May-20 17:08:27]  Dictionary is: {'message': 'Correct request but it returned no data'}
-[root INFO 26-May-20 17:08:27]  Real value is: Correct request but it returned no data
-[root INFO 26-May-20 17:08:27]  Expected value is: Correct request but it returned no data

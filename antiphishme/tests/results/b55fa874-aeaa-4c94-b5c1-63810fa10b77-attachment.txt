@@ -1,2 +1,0 @@
-[32mINFO    [0m root:test_helpers.py:28 [STEP] URL sent - dotpay.e-dpd.pl
-[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/urlscan
