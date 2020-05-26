@@ -11,7 +11,7 @@ ssh -i ~/.ssh/allure_id_rsa -oStrictHostKeyChecking=no -oBatchMode=yes allure@${
 
 echo "Uploading files"
 rsync -Pav -e 'ssh -i ~/.ssh/allure_id_rsa -oStrictHostKeyChecking=no -oBatchMode=yes' \
-    ${PWD}/../antiphishme/tests/results/* "allure@${SSH_ALLURE_HOST}:${SSH_ALLURE_REMOTE_PATH}/"
+    ${PWD}/antiphishme/tests/results/* "allure@${SSH_ALLURE_HOST}:${SSH_ALLURE_REMOTE_PATH}/"
 
 echo "Cleaning ssh key"
 rm -f ~/.ssh/allure_id_rsa
