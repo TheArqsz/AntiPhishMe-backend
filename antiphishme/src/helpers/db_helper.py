@@ -39,7 +39,7 @@ def add_cert(domain, is_bad=False):
     """
     crt_results = crtsh.get_results(domain) 
     if not crt_results:
-        return None
+        return False, -1
     
     crt_id = Certs.add_cert(
         crt_results.get('caid'),
@@ -53,7 +53,7 @@ def add_cert(domain, is_bad=False):
     if crt_id:
         return True, crt_id
     else:
-        return None
+        return False, -1
 
 def add_ip(domain):
     """
@@ -72,19 +72,19 @@ def add_ip(domain):
     if success and ip:
         details = get_ip_details(ip) 
     else:
-        return None
+        return False, -1
     ip_id = IP.add_ip(ip, details.get('country', None), details.get('asn', None))
     if ip_id:
         return True, ip_id
     else:
-        return None
+        return False, -1
     
 def add_baddie(domain, ip_id, crt_id, lev_d, lev_matched_keyword, contained_matched_keyword, entropy):
     return Baddies.add_baddie(domain, ip_id, crt_id, lev_d, lev_matched_keyword, contained_matched_keyword, entropy)
 
 def create_baddie(domain):
-    ip_id = add_ip(domain) or (False,-1)
-    crt_id = add_cert(domain) or (False,-1)
+    _, ip_id = add_ip(domain)
+    _, crt_id = add_cert(domain)
     good_keywords = [k['good_keyword'] for k in Goodies.get_all_goodies()]
     domain_phrases = domain.split('.')
     _, _, lev_matched_keyword = lev.levenstein_check(good_keywords, domain_phrases) 
