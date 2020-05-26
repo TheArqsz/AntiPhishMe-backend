@@ -1,0 +1,12 @@
+coverage:
+    notify:
+        slack:
+            default:
+                url: "secret:VtYickYbqvkWkK+zy3cRtnhU6B7peibkP6Mt4WQQ2pvUq5D1gsQh5YF5j+ZZQn2/8XjJAztWheo1tF5QLaA1+JKxkWwDd7v1Z6YQ/etVZ/JCvcW3P8wpdGQ+5waOGyOlif22Co89gEJH8um9nMHN8nUSXjjh3WBvDdwU4jSwv3w="
+                # threshold: 1%
+                only_pulls: false
+                branches: 
+                    - "master"
+        flags:
+            - backend
+  
