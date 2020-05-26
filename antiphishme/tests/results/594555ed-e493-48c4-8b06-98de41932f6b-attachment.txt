@@ -1,0 +1,18 @@
+[root INFO 26-May-20 17:08:27]  [PRE] Set up Flask client with db
+[root INFO 26-May-20 17:08:27]  [STEP] GET /server/create_db
+[root INFO 26-May-20 17:08:28]  Real value is: 200
+[root INFO 26-May-20 17:08:28]  Expected value is: 200
+[root INFO 26-May-20 17:08:28]  [STEP] POST /details/levenstein
+[root INFO 26-May-20 17:08:28]  Real value is: 200
+[root INFO 26-May-20 17:08:28]  Expected value is: 200
+[root INFO 26-May-20 17:08:28]  <class 'dict'>
+[root INFO 26-May-20 17:08:28]  Key is: details
+[root INFO 26-May-20 17:08:28]  Dictionary is: {'details': {'matched_keyword': 'google', 'levenstein_distance': 1}}
+[root INFO 26-May-20 17:08:28]  Key is: matched_keyword
+[root INFO 26-May-20 17:08:28]  Dictionary is: {'matched_keyword': 'google', 'levenstein_distance': 1}
+[root INFO 26-May-20 17:08:28]  Real value is: google
+[root INFO 26-May-20 17:08:28]  Expected value is: google
+[root INFO 26-May-20 17:08:28]  Key is: levenstein_distance
+[root INFO 26-May-20 17:08:28]  Dictionary is: {'matched_keyword': 'google', 'levenstein_distance': 1}
+[root INFO 26-May-20 17:08:28]  Real value is: 1
+[root INFO 26-May-20 17:08:28]  Expected value is: 1

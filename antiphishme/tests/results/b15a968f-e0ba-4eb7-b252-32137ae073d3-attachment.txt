@@ -1,0 +1,19 @@
+[root INFO 26-May-20 17:09:05]  [STEP] GET /server/create_db
+[root INFO 26-May-20 17:09:05]  Real value is: 200
+[root INFO 26-May-20 17:09:05]  Expected value is: 200
+[root INFO 26-May-20 17:09:05]  [STEP] POST /server/add_keyword
+[root INFO 26-May-20 17:09:05]  <class 'dict'>
+[root INFO 26-May-20 17:09:05]  Real value is: 400
+[root INFO 26-May-20 17:09:05]  Expected value is: 400
+[root INFO 26-May-20 17:09:05]  Key is: detail
+[root INFO 26-May-20 17:09:05]  Dictionary is: {'detail': 'Keyword too short - min 4 signs', 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[root INFO 26-May-20 17:09:05]  Real value is: Keyword too short - min 4 signs
+[root INFO 26-May-20 17:09:05]  Expected value is: Keyword too short - min 4 signs
+[root INFO 26-May-20 17:09:05]  Key is: status
+[root INFO 26-May-20 17:09:05]  Dictionary is: {'detail': 'Keyword too short - min 4 signs', 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[root INFO 26-May-20 17:09:05]  Real value is: 400
+[root INFO 26-May-20 17:09:05]  Expected value is: 400
+[root INFO 26-May-20 17:09:05]  Key is: title
+[root INFO 26-May-20 17:09:05]  Dictionary is: {'detail': 'Keyword too short - min 4 signs', 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[root INFO 26-May-20 17:09:05]  Real value is: Bad Request
+[root INFO 26-May-20 17:09:05]  Expected value is: Bad Request

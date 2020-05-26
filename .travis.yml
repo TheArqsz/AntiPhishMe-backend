@@ -7,7 +7,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install codecov
-script: pytest --cov=./src/tests/ --alluredir ./src/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./src/tests/
+script: pytest --cov=./antiphishme/tests/ --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
 
 after_success:
     - codecov

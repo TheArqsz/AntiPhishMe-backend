@@ -1,0 +1,8 @@
+[root INFO 26-May-20 17:09:01]  [STEP] GET /server/create_db
+[root INFO 26-May-20 17:09:03]  Real value is: 200
+[root INFO 26-May-20 17:09:03]  Expected value is: 200
+[root INFO 26-May-20 17:09:03]  <class 'dict'>
+[root INFO 26-May-20 17:09:03]  Key is: message
+[root INFO 26-May-20 17:09:03]  Dictionary is: {'message': 'Database created.'}
+[root INFO 26-May-20 17:09:03]  Real value is: Database created.
+[root INFO 26-May-20 17:09:03]  Expected value is: Database created.

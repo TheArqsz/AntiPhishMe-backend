@@ -1,0 +1,20 @@
+[32mINFO    [0m root:test_helpers.py:28 [PRE] Set up Flask client with db
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/create_db
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/whois
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: details
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'details': {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}}
+[32mINFO    [0m root:test_helpers.py:28 Key is: registrar
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}
+[32mINFO    [0m root:test_helpers.py:28 Key is: creation_date
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}
+[32mINFO    [0m root:test_helpers.py:28 Key is: name
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}
+[32mINFO    [0m root:test_helpers.py:28 Key is: org
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}
+[32mINFO    [0m root:test_helpers.py:28 Key is: country
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'registrar': 'RESERVED-Internet Assigned Numbers Authority', 'creation_date': '1995-08-14T04:00:00', 'name': None, 'org': None, 'country': None}

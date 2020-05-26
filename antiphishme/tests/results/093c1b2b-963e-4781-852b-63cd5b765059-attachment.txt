@@ -1,0 +1,16 @@
+[32mINFO    [0m root:test_helpers.py:28 [PRE] Set up Flask client with db
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/create_db
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/health
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: db_status
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'db_status': 'OK', 'server_status': 'OK'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: OK
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: OK
+[32mINFO    [0m root:test_helpers.py:28 Key is: server_status
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'db_status': 'OK', 'server_status': 'OK'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: OK
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: OK

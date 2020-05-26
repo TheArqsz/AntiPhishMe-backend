@@ -1,0 +1,18 @@
+[32mINFO    [0m root:test_helpers.py:28 [PRE] Set up Flask client with db
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/create_db
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/safebrowsing
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: details
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'details': {'url': 'example.com', 'malicious': False}}
+[32mINFO    [0m root:test_helpers.py:28 Key is: url
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'url': 'example.com', 'malicious': False}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: example.com
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: example.com
+[32mINFO    [0m root:test_helpers.py:28 Key is: malicious
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'url': 'example.com', 'malicious': False}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: False
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: False

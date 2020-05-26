@@ -8,3 +8,5 @@ env
 venv
 .vscode
 *.db
+.coverage
+.pytest_cache

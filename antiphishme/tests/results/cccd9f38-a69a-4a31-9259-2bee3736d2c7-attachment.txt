@@ -1,0 +1,18 @@
+[32mINFO    [0m root:test_helpers.py:28 [PRE] Set up Flask client with db
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/create_db
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/levenstein
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: details
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'details': {'matched_keyword': 'google', 'levenstein_distance': 1}}
+[32mINFO    [0m root:test_helpers.py:28 Key is: matched_keyword
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'matched_keyword': 'google', 'levenstein_distance': 1}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: google
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: google
+[32mINFO    [0m root:test_helpers.py:28 Key is: levenstein_distance
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'matched_keyword': 'google', 'levenstein_distance': 1}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 1
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 1

@@ -1,0 +1,15 @@
+[32mINFO    [0m root:test_helpers.py:28 [STEP] URL sent - http://malware.testing.google.test/testing/malware/
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/safebrowsing
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: details
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'details': {'url': 'http://malware.testing.google.test/testing/malware/', 'malicious': True}}
+[32mINFO    [0m root:test_helpers.py:28 Key is: url
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'url': 'http://malware.testing.google.test/testing/malware/', 'malicious': True}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: http://malware.testing.google.test/testing/malware/
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: http://malware.testing.google.test/testing/malware/
+[32mINFO    [0m root:test_helpers.py:28 Key is: malicious
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'url': 'http://malware.testing.google.test/testing/malware/', 'malicious': True}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: True
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: True

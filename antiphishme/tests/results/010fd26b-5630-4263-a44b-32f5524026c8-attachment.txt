@@ -1,0 +1,8 @@
+[32mINFO    [0m root:test_helpers.py:28 [STEP] GET /server/create_db
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: message
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'message': 'Database created.'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: Database created.
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: Database created.

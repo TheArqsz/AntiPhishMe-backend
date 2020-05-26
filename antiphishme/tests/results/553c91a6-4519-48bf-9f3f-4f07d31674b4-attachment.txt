@@ -1,0 +1,12 @@
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /details/ip
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 400
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 400
+[32mINFO    [0m root:test_helpers.py:28 Key is: detail
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'detail': 'Wrong IP', 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: Wrong IP
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: Wrong IP
+[32mINFO    [0m root:test_helpers.py:28 Key is: title
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'detail': 'Wrong IP', 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: Bad Request
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: Bad Request

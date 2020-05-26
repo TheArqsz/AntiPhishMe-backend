@@ -1,0 +1,16 @@
+[root INFO 26-May-20 17:08:58]  [PRE] Set up Flask client with db
+[root INFO 26-May-20 17:08:59]  [STEP] GET /server/create_db
+[root INFO 26-May-20 17:09:01]  Real value is: 200
+[root INFO 26-May-20 17:09:01]  Expected value is: 200
+[root INFO 26-May-20 17:09:01]  [STEP] GET /server/health
+[root INFO 26-May-20 17:09:01]  Real value is: 200
+[root INFO 26-May-20 17:09:01]  Expected value is: 200
+[root INFO 26-May-20 17:09:01]  <class 'dict'>
+[root INFO 26-May-20 17:09:01]  Key is: db_status
+[root INFO 26-May-20 17:09:01]  Dictionary is: {'db_status': 'OK', 'server_status': 'OK'}
+[root INFO 26-May-20 17:09:01]  Real value is: OK
+[root INFO 26-May-20 17:09:01]  Expected value is: OK
+[root INFO 26-May-20 17:09:01]  Key is: server_status
+[root INFO 26-May-20 17:09:01]  Dictionary is: {'db_status': 'OK', 'server_status': 'OK'}
+[root INFO 26-May-20 17:09:01]  Real value is: OK
+[root INFO 26-May-20 17:09:01]  Expected value is: OK

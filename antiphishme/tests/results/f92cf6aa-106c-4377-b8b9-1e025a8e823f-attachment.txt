@@ -1,0 +1,12 @@
+[root INFO 26-May-20 17:08:20]  [STEP] POST /details/crtsh
+[root INFO 26-May-20 17:08:20]  <class 'dict'>
+[root INFO 26-May-20 17:08:20]  Real value is: 400
+[root INFO 26-May-20 17:08:20]  Expected value is: 400
+[root INFO 26-May-20 17:08:20]  Key is: detail
+[root INFO 26-May-20 17:08:20]  Dictionary is: {'detail': "'url' is a required property", 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[root INFO 26-May-20 17:08:20]  Real value is: 'url' is a required property
+[root INFO 26-May-20 17:08:20]  Expected value is: 'url' is a required property
+[root INFO 26-May-20 17:08:20]  Key is: title
+[root INFO 26-May-20 17:08:20]  Dictionary is: {'detail': "'url' is a required property", 'status': 400, 'title': 'Bad Request', 'type': 'about:blank'}
+[root INFO 26-May-20 17:08:20]  Real value is: Bad Request
+[root INFO 26-May-20 17:08:20]  Expected value is: Bad Request

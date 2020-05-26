@@ -1,0 +1,8 @@
+[32mINFO    [0m root:test_helpers.py:28 [STEP] POST /verify/by_sfbrowsing
+[32mINFO    [0m root:test_helpers.py:28 Real value is: 200
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: 200
+[32mINFO    [0m root:test_helpers.py:12 <class 'dict'>
+[32mINFO    [0m root:test_helpers.py:28 Key is: status
+[32mINFO    [0m root:test_helpers.py:28 Dictionary is: {'status': 'malicious'}
+[32mINFO    [0m root:test_helpers.py:28 Real value is: malicious
+[32mINFO    [0m root:test_helpers.py:28 Expected value is: malicious

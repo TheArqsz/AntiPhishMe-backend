@@ -1,0 +1,18 @@
+[root INFO 26-May-20 17:08:28]  [PRE] Set up Flask client with db
+[root INFO 26-May-20 17:08:29]  [STEP] GET /server/create_db
+[root INFO 26-May-20 17:08:29]  Real value is: 200
+[root INFO 26-May-20 17:08:29]  Expected value is: 200
+[root INFO 26-May-20 17:08:29]  [STEP] POST /details/safebrowsing
+[root INFO 26-May-20 17:08:30]  Real value is: 200
+[root INFO 26-May-20 17:08:30]  Expected value is: 200
+[root INFO 26-May-20 17:08:30]  <class 'dict'>
+[root INFO 26-May-20 17:08:30]  Key is: details
+[root INFO 26-May-20 17:08:30]  Dictionary is: {'details': {'url': 'example.com', 'malicious': False}}
+[root INFO 26-May-20 17:08:30]  Key is: url
+[root INFO 26-May-20 17:08:30]  Dictionary is: {'url': 'example.com', 'malicious': False}
+[root INFO 26-May-20 17:08:30]  Real value is: example.com
+[root INFO 26-May-20 17:08:30]  Expected value is: example.com
+[root INFO 26-May-20 17:08:30]  Key is: malicious
+[root INFO 26-May-20 17:08:30]  Dictionary is: {'url': 'example.com', 'malicious': False}
+[root INFO 26-May-20 17:08:30]  Real value is: False
+[root INFO 26-May-20 17:08:30]  Expected value is: False

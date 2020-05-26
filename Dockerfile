@@ -20,7 +20,7 @@ RUN pip install -r requirements.txt
     
 ENV PATH="/home/gunicorn/.local/bin:${PATH}"
 
-COPY --chown=gunicorn:gunicorn ./src/ /home/gunicorn/
+COPY --chown=gunicorn:gunicorn ./antiphishme/src/ /home/gunicorn/
 
 EXPOSE 5000
 
