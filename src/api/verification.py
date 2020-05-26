@@ -63,8 +63,7 @@ def verify_by_entropy(url_body):
     except jsonschema.exceptions.ValidationError as exc:
         raise BadRequest(exc.message)
 
-    domain = url_to_domain(url_body.get('url'))
-    if verify_entropy(domain):
+    if verify_entropy(url_body.get('url')):
         verdict = PhishLevel.MALICIOUS.get('status')
     else:
         verdict = PhishLevel.GOOD.get('status')
