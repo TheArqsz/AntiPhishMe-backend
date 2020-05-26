@@ -2,7 +2,7 @@
 
 echo "Creating ssh key"
 mkdir -p ~/.ssh \
-&& echo -e "${SSH_ALLURE_KEY//_/\\n}" > ~/.ssh/allure_id_rsa \
+&& echo -e "${SSH_ALLURE_KEY}" | sed -r 's/_/\n/g' > ~/.ssh/allure_id_rsa \
 && chmod og-rwx ~/.ssh/allure_id_rsa
 
 echo "Uploading files"
