@@ -21,6 +21,7 @@ connexion_app = connexion.App(__name__, specification_dir=SWAGGER_DIR)
 
 # Base directory for whole project
 BASE_DIR = connexion_app.root_path
+CONFIG_PATH = os.path.dirname(os.path.realpath(__file__))
 
 # Logging configuration
 LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
@@ -55,7 +56,7 @@ else:
     logging.debug('[DATABASE] Either DATABASE_DIALECT, DATABASE_USER, DATABASE_PASS, DATABASE_URL or DATABASE_NAME is missing')
     logging.debug('[DATABASE] Using default sqlite database')
     pass
-SQLALCHEMY_DATABASE_URI = SQL_ALCH_DATABASE or 'sqlite:///' + './database/phishing.db'
+SQLALCHEMY_DATABASE_URI = SQL_ALCH_DATABASE or 'sqlite:///' + os.path.join(CONFIG_PATH, 'database/phishing.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 connexion_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
