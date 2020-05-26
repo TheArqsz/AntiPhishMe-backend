@@ -10,7 +10,8 @@ echo "Clear remote"
 ssh -i ~/.ssh/allure_id_rsa -oStrictHostKeyChecking=no -oBatchMode=yes allure@${SSH_ALLURE_HOST} "rm -rf ${SSH_ALLURE_REMOTE_PATH}/*"
 
 echo "Uploading files"
-rsync -Pav -e 'ssh -i ~/.ssh/allure_id_rsa -oStrictHostKeyChecking=no -oBatchMode=yes' ../antiphishme/tests/results/* "allure@${SSH_ALLURE_HOST}:${SSH_ALLURE_REMOTE_PATH}/"
+rsync -Pav -e 'ssh -i ~/.ssh/allure_id_rsa -oStrictHostKeyChecking=no -oBatchMode=yes' \
+    ${PWD}/../antiphishme/tests/results/* "allure@${SSH_ALLURE_HOST}:${SSH_ALLURE_REMOTE_PATH}/"
 
 echo "Cleaning ssh key"
 rm -f ~/.ssh/allure_id_rsa
