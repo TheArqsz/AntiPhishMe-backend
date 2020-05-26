@@ -194,14 +194,3 @@ class Tests:
     def test_summary_invalid_data(self, urlscan_data):
         r = summary(dict())
         assert_none(r, "Check if returned search data is None")
-
-    # @allure.description("""
-    # Test urlscan api module
-
-    # Expect UrlscanException.
-    # """)
-    # def test_lookup_url_exception(self):
-
-    #     url = None
-    #     info("Requested empty url")
-    #     assert_exception( lookup_url, SafeBrowsingException, "Check if empty url throws Exception", args=url)
