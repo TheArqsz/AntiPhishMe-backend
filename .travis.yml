@@ -12,6 +12,9 @@ script: pytest --cov=./antiphishme/src/ --alluredir ./antiphishme/tests/results 
 after_success:
     - codecov
 
+after_script:
+    - sh scripts/upload_allure_results.sh
+
 notifications:
     slack:
         rooms:
