@@ -60,8 +60,8 @@ Copyright 2020, [Varamthir](https://github.com/NeonDreamZ)
 
 ## Contributors
 
-- (Arqsz)[https://github.com/TheArqsz]
-- (Tacola)[https://github.com/Tacola320]
+- [Arqsz](https://github.com/TheArqsz)
+- [Tacola](https://github.com/Tacola320)
 
 ## New features or bugs
 
