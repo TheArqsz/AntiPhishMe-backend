@@ -26,7 +26,7 @@ class Tests:
         client = client_with_db[0]
         endpoint = '/details/levenstein'
         data = {
-            'url': 'gooogle.com'
+            'url': 'gooogle.info'
         }
         headers = {
             'Content-Type': "application/json"
