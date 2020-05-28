@@ -21,6 +21,7 @@ after_success:
 
 after_script:
     - sh scripts/upload_allure_results.sh
+    - sh scripts/send_allure_notification.sh
 
 notifications:
     slack:
