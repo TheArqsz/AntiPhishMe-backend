@@ -3,16 +3,18 @@ cache:
     directories:
         - $HOME/.cache/pip
 python:
-  - "3.8"
+    - "3.8"
+services:
+    - docker
 
 branches:
     only:
         - develop
         - master
 
-env:
-    - LOCAL_DOCKER_IMAGE=antiphishme
-    - LOCAL_DOCKER_SERVER="127.0.0.1:5000"
+before_install:
+    - export LOCAL_DOCKER_IMAGE=antiphishme
+    - export LOCAL_DOCKER_SERVER="127.0.0.1:5000"
 
 install:
     - pip install -r requirements.txt
