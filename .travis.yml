@@ -21,11 +21,12 @@ after_success:
 
 after_script:
     - sh scripts/upload_allure_results.sh
+    - sh scripts/send_allure_notification.sh
 
 notifications:
     slack:
         rooms:
-            - secure: secret:oJkHRlXPFgrTfLCr+Kj/De5t3Q+fk21IZU7UrAKaMOestvIWdIaaMm5PvzmVtEZoqFxa1nrBS+hta82Ln5jsZEmiKrP/w8vtMiPZxThj+MvWpaBAnFW/H9NIQMAhmBYAfhTqAsvB41jIfJsyN4gLZr8F9vKt/UPbrnYr+soKV3g=
+            - secure: 1S6TCPzL9kTuosNmQBPcCH51fnj1i1zujJwZIbw/5fU+dGFF2ywchu3JAstCcyyihAMPwJiCl2BRAMMX7+ms+5v3kHslgJAjml7xaB9MkK+B0qb2T4g1CrbDQXPvMzPUH/b17d6QC3cvn1COJVeC01+nSguZtsAFOsnFSB9a7kYpYL5v2qmUKPNzqsej5qe+vn66lx7PDr549nlWTsIhfzarR4p475er6751QaWT4/DmMJQHJb1iRzyCYX4vu7xVcT6GWtDM4aJ9+pxnEJGYU25MLHZwcR1HEH270+w4tTsN8AfiOi348uwYEOOFzUjYpPbRZ4026gg6dG3QxIg45CS6TPXpVev4uHu0jJ3Rwke27HzLGZcs4vgA7SjKw7VB6RWoHn+r559ZNSI7FRgbo+CtiuWWnAI+qslIcZ+Upky+6zMcGNcf7KLSC6Fta2G1FHcbt9dMhu7nYqwPeOiKFjsH/78/TSS0GgNycDbkdah8PUsNef4Y5h/guJfh6/oYE8rNLW6M4fw0nEcIu/OCa+sInPJto2Wq+PohdEN+BMl593S+Uu1vRot3voTuQJZJ7tuXrrvsCqdu802M4o4gaJOK0slbZx6AY+j2UsfnfKy2c6Hg8fGk3SiMjSVmm605iRnUYIm1hlBRQ6dJ/22n/fuwxwL1NDSbJ/KWHytSPUU=
         on_success: always  # change: send a notification when the build status changes.
         on_failure: always  # always: always send a notification.
         template:
