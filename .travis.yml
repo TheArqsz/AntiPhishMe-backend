@@ -4,6 +4,11 @@ cache:
         - $HOME/.cache/pip
 python:
   - "3.8"
+  
+branches:
+    only:
+        - master
+
 install:
   - pip install -r requirements.txt
   - pip install codecov
