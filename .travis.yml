@@ -19,7 +19,7 @@ before_install:
 install:
     - pip install -r requirements.txt
     - pip install codecov
-    - docker build . --no-cache -t $LOCAL_DOCKER_IMAGE:latest
+    - docker build . -t $LOCAL_DOCKER_IMAGE:latest
     - docker run -d -p $LOCAL_DOCKER_SERVER:5000 -e ENV=docker_dev -e HOST="0.0.0.0" --name $LOCAL_DOCKER_IMAGE $LOCAL_DOCKER_IMAGE
 script: 
     - pytest --cov=./antiphishme/src/ --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
