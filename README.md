@@ -15,7 +15,7 @@
 
 ## Prerequisites
 
-- python >3.6
+- python > 3.6
 - pip
 
 ## Installation
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ## Run
 
 ```python3
-python src/app.py
+python antiphishme/src/app.py
 ```
 
 ## UI
@@ -46,7 +46,7 @@ At default, swaggerUI can be found at `localhost:5000/api/v1/ui`
 | BASE_PATH | Base path for swagger | `/api/v1` | `/api/v1` |
 | URLSCAN_API_KEY | API key for urlscan.io | `-` | `-` |
 | SAFEBROWSING_API_KEY | API key for safebrowsing | `-` | `-` |
-| AUTH_API_KEY | API key for server and db endpoints | `-` | `test_api_key_978675645342312` |
+| AUTH_API_KEY | API key for server and db endpoints | `-` | `test_api_key` |
 
 ## License
 
@@ -65,4 +65,4 @@ Copyright 2020, [Varamthir](https://github.com/NeonDreamZ)
 
 ## New features or bugs
 
-Follow templates from (here)[https://github.com/TheArqsz/AntiPhishMe-backend/issues/new/choose]
+Follow templates from [here](https://github.com/TheArqsz/AntiPhishMe-backend/issues/new/choose)
