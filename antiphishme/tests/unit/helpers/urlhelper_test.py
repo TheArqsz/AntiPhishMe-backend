@@ -3,16 +3,12 @@ from unittest import mock
 import pytest
 
 from antiphishme.tests.test_helpers import (
-    assert_true,
     assert_equal,
-    assert_none,
     assert_type,
-    assert_false,
     info
 )
 
 from antiphishme.src.helpers import url_helper
-from secrets import token_hex
 
 @allure.epic("helpers")
 @allure.parent_suite("Unit tests")
