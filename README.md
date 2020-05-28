@@ -1,5 +1,12 @@
+<div style="text-align:center; width:20%">
+    <img src="Logo.png" alt="AntiPhishMe Logo"/>
+</div>
 
 # Phishing add-on backend
+
+Travis status: [![Build Status](https://travis-ci.com/TheArqsz/phishing_backend.svg?branch=develop)](https://travis-ci.com/TheArqsz/phishing_backend)
+
+Code coverage: [![codecov](https://codecov.io/gh/TheArqsz/AntiPhishMe-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/TheArqsz/AntiPhishMe-backend)
 
 ## Prerequisites
 
