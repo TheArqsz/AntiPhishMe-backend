@@ -8,6 +8,7 @@ python:
 branches:
     only:
         - develop
+        - master
 
 install:
   - pip install -r requirements.txt
@@ -15,7 +16,8 @@ install:
 script: pytest --cov=./antiphishme/src/ --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
 
 after_success:
-    - codecov
+    - sh scripts/codecov.sh
+    - sh scripts/merge_branches.sh
 
 after_script:
     - sh scripts/upload_allure_results.sh

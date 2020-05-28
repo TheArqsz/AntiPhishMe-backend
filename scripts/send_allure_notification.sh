@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 
+if [ $TRAVIS_BRANCH != $GIT_BRANCH_DEV ]; then
+    echo "Current branch doesn't match requirements to send notification"
+    exit 0
+fi
+
 if [ -z "${ALLURE_HOST}" ]
 then
     echo "ALLURE_HOST env var cannot be found - exiting"
