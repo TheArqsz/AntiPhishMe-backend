@@ -1,5 +1,7 @@
 <p align="center">
-    <img width="30%" src="Logo.png" alt="AntiPhishMe Logo"/>
+    <a href="https://antiphishme.info/">
+        <img width="30%" src="Logo.png" alt="AntiPhishMe Logo"/>
+    </a>
 </p>
 
 # Phishing add-on backend
@@ -55,3 +57,12 @@ MIT License (see the [LICENSE](LICENSE) file)
 ### Graphic design
 
 Copyright 2020, [Varamthir](https://github.com/NeonDreamZ)
+
+## Contributors
+
+- (Arqsz)[https://github.com/TheArqsz]
+- (Tacola)[https://github.com/Tacola320]
+
+## New features or bugs
+
+Follow templates from (here)[https://github.com/TheArqsz/AntiPhishMe-backend/issues/new/choose]
