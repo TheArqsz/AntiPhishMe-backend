@@ -8,7 +8,8 @@ from antiphishme.tests.test_helpers import (
     data_to_json, 
     info, 
     assert_equal, 
-    assert_dict_contains_key
+    assert_dict_contains_key,
+    assert_is_in
 )
 
 @allure.epic("Details")
@@ -33,7 +34,10 @@ class Tests:
         }
         info("POST {}".format(endpoint))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
-        assert_equal(response.status_code, 200, "Check status code")
+        assert_is_in(response.status_code, [200, 202], "Check if correct status code was returned")
+        if response.status_code == 202:
+            info("Returned 202 - skipping rest of asserts")
+            return
         j = data_to_json(response.data)
         field = "details"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
