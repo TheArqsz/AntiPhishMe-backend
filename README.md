@@ -1,6 +1,6 @@
-<div style="text-align:center; width:20%">
-    <img src="Logo.png" alt="AntiPhishMe Logo"/>
-</div>
+<p align="center">
+    <img width="30%" src="Logo.png" alt="AntiPhishMe Logo"/>
+</p>
 
 # Phishing add-on backend
 
