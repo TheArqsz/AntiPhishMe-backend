@@ -28,6 +28,7 @@ script:
 after_success:
     - sh scripts/codecov.sh
     - sh scripts/merge_branches.sh
+    - sh scripts/push_docker_image.sh
 
 after_script:
     - sh scripts/upload_allure_results.sh
@@ -43,5 +44,4 @@ notifications:
             - "Repository `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) branch `%{branch}`."
             - "Execution time: *%{duration}*"
             - "Message: %{message}"
-            - "Docker image is `$LOCAL_DOCKER_IMAGE_STATUS`"
     email: false

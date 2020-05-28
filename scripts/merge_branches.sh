@@ -25,7 +25,7 @@ git checkout $TRAVIS_BRANCH
 echo "Checking out $GIT_BRANCH_TO"
 git checkout $GIT_BRANCH_TO
 
-git merge $TRAVIS_BRANCH --squash --no-ff
+git merge $TRAVIS_BRANCH --squash
 git commit -m "Automerging from $TRAVIS_BRANCH commit $TRAVIS_COMMIT"
 
 echo "Pushing to https://github.com/$TRAVIS_REPO_SLUG"
