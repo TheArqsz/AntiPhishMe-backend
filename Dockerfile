@@ -20,10 +20,10 @@ RUN pip install -r requirements.txt
     
 ENV PATH="/home/gunicorn/.local/bin:${PATH}"
 
-COPY --chown=gunicorn:gunicorn ./antiphishme/src/ /home/gunicorn/
+COPY --chown=gunicorn:gunicorn ./ /home/gunicorn/
 
 EXPOSE 5000
 
 ENTRYPOINT ["gunicorn"]
 
-CMD ["-c=gunicorn.conf.py", "app:connexion_app"]
+CMD ["-c=antiphishme/src/gunicorn.conf.py", "antiphishme.src.app:connexion_app"]

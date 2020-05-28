@@ -1,7 +1,7 @@
 import os
 import multiprocessing
 
-from config import DEBUG, HOST, PORT, ENVIRONMENT, LOCAL_ENVIRONMENTS, DOCKER_LOCAL_ENVIRONMENTS
+from antiphishme.src.config import DEBUG, HOST, PORT, ENVIRONMENT, LOCAL_ENVIRONMENTS, DOCKER_LOCAL_ENVIRONMENTS
 
 bind = f"{HOST}:{PORT}"
 
