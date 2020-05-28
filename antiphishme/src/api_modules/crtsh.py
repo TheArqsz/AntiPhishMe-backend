@@ -2,6 +2,7 @@ import json
 
 from pycrtsh import Crtsh
 from antiphishme.src.helpers.url_helper import url_to_domain
+from antiphishme.src.config import logging as log
 
 def _search_domain(domain):
     """
@@ -24,7 +25,14 @@ def _get_details(crt_id):
 
     """
     c = Crtsh()
-    return c.get(crt_id)
+    try:
+        return c.get(crt_id)
+    except IndexError as err:
+        log.error(err)
+        return {
+            'subject': dict(),
+            'issuer': dict()
+        }
         
 def get_results(domain):
     certs = _search_domain(domain)
