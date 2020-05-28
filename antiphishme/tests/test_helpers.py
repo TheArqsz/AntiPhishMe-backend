@@ -57,7 +57,6 @@ def assert_is_in(real, collection, message=None):
             info("Real value is: {}".format(real), raw=True)
             info("Expected values are: {}".format(collection), raw=True)
             assert_that(real, is_in(collection))
-            
 
 def assert_dict_contains_key(d, key, message=None):
     __tracebackhide__ = True
