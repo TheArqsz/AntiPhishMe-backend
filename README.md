@@ -6,7 +6,7 @@
 
 # Phishing add-on backend
 
-[![Build Status](https://travis-ci.com/TheArqsz/phishing_backend.svg?branch=develop)](https://travis-ci.com/TheArqsz/phishing_backend)
+[![Build Status](https://travis-ci.com/TheArqsz/AntiPhishMe-backend.svg?branch=master)](https://travis-ci.com/TheArqsz/phishing_backend)
 [![codecov](https://codecov.io/gh/TheArqsz/AntiPhishMe-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/TheArqsz/AntiPhishMe-backend)
 [![Python](https://img.shields.io/pypi/pyversions/Django)](https://img.shields.io/pypi/pyversions/Django)
 [![License](https://img.shields.io/github/license/TheArqsz/AntiPhishMe-backend)](https://img.shields.io/github/license/TheArqsz/AntiPhishMe-backend)
