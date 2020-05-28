@@ -1,0 +1,13 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+venv
+.vscode
+*.db
+.coverage
+.pytest_cache
+antiphishme/tests

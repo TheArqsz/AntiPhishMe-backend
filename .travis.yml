@@ -1,0 +1,33 @@
+language: python
+cache: 
+    directories:
+        - $HOME/.cache/pip
+python:
+  - "3.8"
+
+branches:
+    only:
+        - develop
+
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+script: pytest --cov=./antiphishme/src/ --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
+
+after_success:
+    - codecov
+
+after_script:
+    - sh scripts/upload_allure_results.sh
+
+notifications:
+    slack:
+        rooms:
+            - secure: HNafsEjIjeKuAGbsc0ghIvov5Y8Qr8ZenQoiUqxuXv7a1ue2emKVo9qpo16rrzNu1iLYUqu+PUum83kZ3YdRFqfjLDzfSmy+NYmIYR6Q7nPaUmAWq3HHtTdjibBTafFRengilc9y8oz+FJT4g1oB+uYI/YxL5Lj9iZose/AZPIM2Q/u7n1ANC0JrHpiB4QkTFD9F1VIzKjrCLMHDG1Is5Jc8Kh+5kxLBRUMR7bSqqh8SlmvkGAf6az4sPGQNjP39YfPHos3wW0hfM3xeq7miWz3wFTLmzTJulO/GENPbFRNs7ZMz6rt7aRvnPsVBdLwRYlcqxRnfHzDCRU5hAE2U8z0lJK33RzIQO8M1UXHStUtS4Hed/jkHPAY8gdJzDYSrLOI+b25OH9gzmule7bZ3gV/V/gMSswyX7QXojSMKlK4XWeeqduFkRry2MTUWXw9J8fhQuc2jsNDfT2xymcsTjkLGyfD9j6vA84Ea1D/RY2HPAU2AmYEX4wHGW8nG5BUOn5HYrJoeHy7CYYbI9vp5V8kK7G7HTb/mW/FXxDVOjpPF/YLLaC4liZsVaxyPAv1hEIq2NDKzvQd6fXl5uCgZ9f2G5RRebFrg5G3qi5H8yZWvMLVRpBqcV47Fo7EDZFSrrxuNm8k+KyLGrURND/ghMfy8fp8KnanNPCOHEgKKnr0=
+        on_success: always  # change: send a notification when the build status changes.
+        on_failure: always  # always: always send a notification.
+        template:
+            - "Repository `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) branch `%{branch}`."
+            - "Execution time: *%{duration}*"
+            - "Message: %{message}"
+    email: false
