@@ -12,7 +12,12 @@ def _search_domain(domain):
     """
     domain = url_to_domain(domain)
     c = Crtsh()
-    certs = c.search(domain)
+    try:
+        certs = c.search(domain)
+    except json.JSONDecodeError as err:
+        log.error(err)
+        return None
+        
     if not certs:
         return None
     else:
