@@ -44,6 +44,20 @@ def assert_equal(real, expected, message=None):
             info("Expected value is: {}".format(expected), raw=True)
             assert_that(real, equal_to(expected))
 
+def assert_is_in(real, collection, message=None):
+    __tracebackhide__ = True
+    if message:
+        with allure.step("[STEP] {}".format(message)):
+            with allure.step("Assert real \"{}\" is in \"{}\"".format(real, collection)):
+                info("Real value is: {}".format(real), raw=True)
+                info("Expected values are: {}".format(collection), raw=True)
+                assert_that(real, is_in(collection))
+    else:
+        with allure.step("Assert real \"{}\" is in \"{}\"".format(real, collection)):
+            info("Real value is: {}".format(real), raw=True)
+            info("Expected values are: {}".format(collection), raw=True)
+            assert_that(real, is_in(collection))
+
 def assert_dict_contains_key(d, key, message=None):
     __tracebackhide__ = True
     if message:
