@@ -68,7 +68,7 @@ def search_newest(url):
     if res:
         sorted_res = sorted(res, key=lambda k: datetime.strptime(k['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ"), reverse=True)
         for res in sorted_res:
-            if res['task']['url'].strip('http://').strip('www.') == url.strip('http://').strip('www.'):
+            if res['task']['url'].strip('http://') == url.strip('http://'):
                 return res, datetime.strptime(res['task']['time'], "%Y-%m-%dT%H:%M:%S.%fZ")
     else:
         return dict(), None
