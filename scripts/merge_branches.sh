@@ -20,12 +20,12 @@ git clone "https://github.com/$TRAVIS_REPO_SLUG" "$repo_temp"
 
 cd "$repo_temp"
 
-echo "Checking out $TRAVIS_BRANCH"
-git checkout $TRAVIS_BRANCH
+echo "Fetching changes from $TRAVIS_BRANCH"
+git fetch $TRAVIS_BRANCH
 echo "Checking out $GIT_BRANCH_TO"
-git checkout $GIT_BRANCH_TO
+git checkout $GIT_BRANCH_TO && git pull
 
-git merge $TRAVIS_BRANCH --squash
+git merge $TRAVIS_BRANCH --squash && \
 git commit -m "Automerging from $TRAVIS_BRANCH commit $TRAVIS_COMMIT"
 
 echo "Pushing to https://github.com/$TRAVIS_REPO_SLUG"
