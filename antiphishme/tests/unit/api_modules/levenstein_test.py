@@ -15,6 +15,7 @@ from faker import Faker
 
 @allure.epic("api_modules")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("api_modules")
 @allure.sub_suite("levenstein")
 class Tests:

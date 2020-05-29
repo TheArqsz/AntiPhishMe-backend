@@ -25,6 +25,7 @@ from secrets import token_hex
 
 @allure.epic("helpers")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("helpers")
 @allure.sub_suite("dbhelper")
 class Tests:

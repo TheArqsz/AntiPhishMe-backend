@@ -16,6 +16,7 @@ from os import getenv
 
 @allure.epic("Details")
 @allure.parent_suite("Functional")
+@allure.story('Functional')
 @allure.suite("Details")
 @allure.sub_suite("who.is")
 class Tests:

@@ -11,6 +11,7 @@ from antiphishme.tests.test_helpers import (
 
 @allure.epic("Verify")
 @allure.parent_suite("Functional")
+@allure.story('Functional')
 @allure.suite("Verify")
 @allure.sub_suite("All")
 class Tests:

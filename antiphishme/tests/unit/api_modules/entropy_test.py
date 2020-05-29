@@ -9,6 +9,7 @@ from antiphishme.tests.test_helpers import (
 
 @allure.epic("api_modules")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("api_modules")
 @allure.sub_suite("entropy")
 class Tests:

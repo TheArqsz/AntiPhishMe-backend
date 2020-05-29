@@ -14,6 +14,7 @@ from antiphishme.tests.test_helpers import (
 
 @allure.epic("Details")
 @allure.parent_suite("Functional")
+@allure.story('Functional')
 @allure.suite("Details")
 @allure.sub_suite("crt.sh")
 class Tests:

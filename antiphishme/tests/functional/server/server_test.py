@@ -23,6 +23,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 @allure.epic("Server")
 @allure.parent_suite("Functional")
+@allure.story('Functional')
 @allure.suite("Server")
 #@allure.sub_suite("sub suite name")
 class Tests:
