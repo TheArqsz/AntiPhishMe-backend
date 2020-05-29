@@ -22,6 +22,7 @@ from antiphishme.src.models import (
 from antiphishme.src.helpers import db_helper
 from antiphishme.src.api_modules import ip_module
 from secrets import token_hex
+from random import randint
 
 @allure.epic("helpers")
 @allure.parent_suite("Unit tests")
@@ -72,12 +73,16 @@ class Tests:
 
     Expect correct ip id.
     """)    
-    def test_add_ip_correct(self): #, mock_get_ip_details):
+    @mock.patch.object(ip_model.IP, 'add_ip')
+    def test_add_ip_correct(self, mock_add_ip):
         ip = "127.0.0.1"
-
+        mocked_id = randint(1,10)
+        # Mock Goodies response
+        mock_add_ip.return_value = mocked_id
         status, cid = db_helper.add_ip(ip)
         assert_true(status, "Check if method return correct status")
         assert_type(cid, int, "Check if id is correct int")
+        assert_equal(cid, mocked_id, "Check if returned id is as expected")
 
     @allure.description("""
     Test db_helper helpers module
