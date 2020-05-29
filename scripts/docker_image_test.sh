@@ -21,10 +21,8 @@ response=$(curl --write-out %{http_code} --silent --output /dev/null $LOCAL_DOCK
 if [ $response -eq 404 ]
 then
     echo "Image \"$LOCAL_DOCKER_IMAGE\" is working"
-    export LOCAL_DOCKER_IMAGE_STATUS="working"
     exit 0
 else    
     echo "Image \"$LOCAL_DOCKER_IMAGE\" is not working"
-    export LOCAL_DOCKER_IMAGE_STATUS="not working"
     exit 1
 fi
