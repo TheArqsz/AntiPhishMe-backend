@@ -46,6 +46,7 @@ class Tests:
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @pytest.mark.skipif(getenv('URLSCAN_API_KEY', None) is  None, reason="URLSCAN_API_KEY env variable must be set")
+    @pytest.mark.flaky(reruns=20, reruns_delay=2)
     @allure.description_html("""
     <h5>Test endpoint "/verify/by_urlscan"</h5>
 
@@ -66,14 +67,14 @@ class Tests:
         info("POST {}".format(endpoint))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
-        if response.status_code == 202:
-            pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(malicious_url))
+        # if response.status_code == 202:
+        #     pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(malicious_url))
         j = data_to_json(response.data)
         field = "status"
         expected_value = "malicious"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        if j[field] == "good":
-            pytest.skip("urlscan.io returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
+        # if j[field] == "good":
+        #     pytest.skip("urlscan.io returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""

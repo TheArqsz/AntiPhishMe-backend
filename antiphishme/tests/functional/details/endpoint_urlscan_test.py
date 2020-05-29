@@ -80,6 +80,7 @@ class Tests:
 
 
     @pytest.mark.skipif(getenv('URLSCAN_API_KEY', None) is  None, reason="URLSCAN_API_KEY env variable must be set")
+    @pytest.mark.flaky(reruns=20, reruns_delay=2)
     @allure.description_html("""
     Test endpoint "/details/urlscan"
 
@@ -100,8 +101,8 @@ class Tests:
         }
         info("POST {}".format(endpoint))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
-        if response.status_code == 202:
-            pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(url))
+        # if response.status_code == 202:
+        #     pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(url))
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
         field = "details"
