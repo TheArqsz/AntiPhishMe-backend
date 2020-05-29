@@ -46,7 +46,7 @@ class Tests:
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @pytest.mark.skipif(getenv('URLSCAN_API_KEY', None) is  None, reason="URLSCAN_API_KEY env variable must be set")
-    @pytest.mark.flaky(reruns=20, reruns_delay=2)
+    @pytest.mark.flaky(reruns=40, reruns_delay=1)
     @allure.description_html("""
     <h5>Test endpoint "/verify/by_urlscan"</h5>
 
