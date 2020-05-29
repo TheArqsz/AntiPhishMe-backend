@@ -41,7 +41,21 @@ docker push $DOCKER_USERNAME/$REMOTE_DOCKER_IMAGE:latest
 echo "Sending notification"
 curl -X POST \
     --data-urlencode "payload={\
-        \"text\": \"Docker image **$LOCAL_DOCKER_IMAGE** status: `working`.
-Image can be found here: <https://hub.docker.com/r/$DOCKER_USERNAME/$REMOTE_DOCKER_IMAGE|$DOCKER_USERNAME/$REMOTE_DOCKER_IMAGE>\"
+    \"blocks\": [ \
+		{ \
+			\"type\": \"section\", \
+			\"text\": { \
+				\"type\": \"mrkdwn\", \
+				\"text\": \"Docker image *$LOCAL_DOCKER_IMAGE* status: \`working\`\" \
+			} \
+		}, \
+		{ \
+			\"type\": \"section\", \
+			\"text\": { \
+				\"type\": \"mrkdwn\", \
+				\"text\": \"Image can be found here: <https://hub.docker.com/r/$DOCKER_USERNAME/$REMOTE_DOCKER_IMAGE|$DOCKER_USERNAME/$REMOTE_DOCKER_IMAGE>\" \
+			} \
+		} \
+	] \
         }" \
         ${DOCKER_SLACK_URL}
