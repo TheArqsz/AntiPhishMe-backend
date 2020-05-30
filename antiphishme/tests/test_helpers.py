@@ -169,8 +169,11 @@ def assert_type(o, t, message=None):
 def get_test_phishing_domain():
     __tracebackhide__ = True
     ch = CertHole()
-    l = ch.get_data('txt')
-    wait(2)
+    l = None
+    tries = 0
+    l = ch.get_data(random.choice(['txt', 'xml']))
+    log.info("Collected list of domains from certhole: {}".format(l[:4]))
+    wait(3)
     tries = 0
     while tries < 200:
         try:
@@ -179,21 +182,20 @@ def get_test_phishing_domain():
             log.error(err)
             tries += 1
             continue
-
         domain = c.domain_address
         if not "http://" in domain and not "https://" in domain:
             domain = "http://{}".format(domain)
         try:
             status = (requests.get(domain)).status_code
+            wait(1)
         except requests.exceptions.ConnectionError as err:
             log.error(err)
             tries += 1
-            l = l.remove(c)
+            l.remove(c)
             continue
-
         if status in list([i for i in range(400, 500)] + [200]):
             return domain
         else:
             tries += 1
-            l = l.remove(c)
+            l.remove(c)
             continue

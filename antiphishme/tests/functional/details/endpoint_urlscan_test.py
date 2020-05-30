@@ -50,7 +50,7 @@ class Tests:
         field = "domain"
         expected_value = url
         assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
-        assert_equal(j['details'][field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
+        assert_equal(j['details'][field].strip('http://'), expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = 'ip'
         assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
         field = 'country'
