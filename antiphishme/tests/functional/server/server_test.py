@@ -21,10 +21,10 @@ from antiphishme.tests.test_helpers import (
 from flask_sqlalchemy import SQLAlchemy
 
 
-@allure.epic("Server")
+@allure.epic("server")
 @allure.parent_suite("Functional")
 @allure.story('Functional')
-@allure.suite("Server")
+@allure.suite("server")
 #@allure.sub_suite("sub suite name")
 class Tests:
 

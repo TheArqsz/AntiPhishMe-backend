@@ -19,10 +19,10 @@ environ['COUNT_FAILED'] = '1'
 
 
 
-@allure.epic("Verify")
+@allure.epic("verify")
 @allure.parent_suite("Functional")
 @allure.story('Functional')
-@allure.suite("Verify")
+@allure.suite("verify")
 @allure.sub_suite("urlscan.io")
 class Tests:
 

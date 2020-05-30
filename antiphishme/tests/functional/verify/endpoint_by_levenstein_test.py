@@ -11,10 +11,10 @@ from antiphishme.tests.test_helpers import (
     assert_dict_contains_key
 )
 
-@allure.epic("Verify")
+@allure.epic("verify")
 @allure.parent_suite("Functional")
 @allure.story('Functional')
-@allure.suite("Verify")
+@allure.suite("verify")
 @allure.sub_suite("Levenstein")
 class Tests:
 

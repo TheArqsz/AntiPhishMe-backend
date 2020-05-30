@@ -14,10 +14,10 @@ from antiphishme.tests.test_helpers import (
 
 from os import getenv
 
-@allure.epic("Verify")
+@allure.epic("verify")
 @allure.parent_suite("Functional")
 @allure.story('Functional')
-@allure.suite("Verify")
+@allure.suite("verify")
 @allure.sub_suite("Safebrowsing")
 class Tests:
 

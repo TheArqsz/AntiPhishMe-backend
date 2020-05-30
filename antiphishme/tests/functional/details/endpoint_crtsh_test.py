@@ -12,10 +12,10 @@ from antiphishme.tests.test_helpers import (
     assert_is_in
 )
 
-@allure.epic("Details")
+@allure.epic("details")
 @allure.parent_suite("Functional")
 @allure.story('Functional')
-@allure.suite("Details")
+@allure.suite("details")
 @allure.sub_suite("crt.sh")
 class Tests:
 
