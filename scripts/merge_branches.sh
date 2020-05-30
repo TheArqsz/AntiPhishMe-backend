@@ -20,8 +20,8 @@ git clone "https://github.com/$TRAVIS_REPO_SLUG" "$repo_temp"
 
 cd "$repo_temp"
 
-echo "Fetching changes from $TRAVIS_BRANCH"
-git fetch $TRAVIS_BRANCH
+echo "Fetching changes from all branches"
+git fetch --all
 echo "Checking out $GIT_BRANCH_TO"
 git checkout $GIT_BRANCH_TO && git pull
 
