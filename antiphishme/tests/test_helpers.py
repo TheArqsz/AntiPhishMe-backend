@@ -1,7 +1,7 @@
 import pytest
 import allure
 import random
-import urllib
+import requests
 from hamcrest import * 
 from antiphishme.src.config import logging as log
 from json import loads, JSONDecodeError
@@ -175,7 +175,7 @@ def get_test_phishing_domain():
         domain = c.domain_address
         if not "http://" in domain and not "https://" in domain:
             domain = "http://{}".format(domain)
-        status = urllib.request.urlopen(domain).getcode()
+        status = (requests.get(domain)).status_code
         if status == 200:
             return domain
         else:
