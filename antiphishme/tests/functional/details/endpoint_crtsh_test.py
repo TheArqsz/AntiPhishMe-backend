@@ -33,7 +33,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_is_in(response.status_code, [200, 202], "Check if correct status code was returned")
         if response.status_code == 202:
@@ -73,7 +73,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")

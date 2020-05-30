@@ -32,7 +32,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'google.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
@@ -55,7 +55,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")
