@@ -36,10 +36,10 @@ class Tests:
         # Mock Baddies response
         mocked_list = [
             {
-                "domain_name": "example.com"
+                "domain_name": "not-example.com"
             },
             {
-                "domain_name": "not-example.com"
+                "domain_name": "example.com"
             }
         ]
         mock_get_all_baddies.return_value = mocked_list

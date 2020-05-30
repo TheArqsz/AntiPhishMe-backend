@@ -26,7 +26,7 @@ git checkout $GIT_BRANCH_TO && git pull
 echo "Fetching changes from $TRAVIS_BRANCH"
 git fetch origin $TRAVIS_BRANCH
 
-git merge $TRAVIS_BRANCH --squash && \
+git merge origin/$TRAVIS_BRANCH --squash && \
 git commit -m "Automerging from $TRAVIS_BRANCH commit $TRAVIS_COMMIT"
 
 echo "Pushing to https://github.com/$TRAVIS_REPO_SLUG"
