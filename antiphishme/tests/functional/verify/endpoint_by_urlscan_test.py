@@ -16,7 +16,7 @@ from antiphishme.tests.test_helpers import (
 from os import getenv, environ
 
 environ['COUNT_FAILED'] = '1'
-
+URLSCAN_RERUNS_MAX = 20
 
 
 @allure.epic("verify")
@@ -50,7 +50,7 @@ class Tests:
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @pytest.mark.skipif(getenv('URLSCAN_API_KEY', None) is  None, reason="URLSCAN_API_KEY env variable must be set")
-    @pytest.mark.flaky(reruns=10, reruns_delay=3)
+    @pytest.mark.flaky(reruns=URLSCAN_RERUNS_MAX, reruns_delay=1)
     @allure.description_html("""
     <h5>Test endpoint "/verify/by_urlscan"</h5>
 
@@ -59,7 +59,7 @@ class Tests:
     <h4> Skip if env. variable not set</h2>
     """)
     def test_verify_by_urlscan_malicious(self, client_with_db):
-        if int(environ['COUNT_FAILED']) > 9:
+        if int(environ['COUNT_FAILED']) > (URLSCAN_RERUNS_MAX-1):
             pytest.skip("urlscan.io cannot finish properly")
         environ['COUNT_FAILED'] = str( int(environ['COUNT_FAILED']) + 1 )
         client = client_with_db[0]
