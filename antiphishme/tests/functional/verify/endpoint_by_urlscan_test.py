@@ -13,11 +13,16 @@ from antiphishme.tests.test_helpers import (
     assert_dict_contains_key
 )
 
-from os import getenv
+from os import getenv, environ
 
-@allure.epic("Verify")
+environ['COUNT_FAILED'] = '1'
+URLSCAN_RERUNS_MAX = 20
+
+
+@allure.epic("verify")
 @allure.parent_suite("Functional")
-@allure.suite("Verify")
+@allure.story('Functional')
+@allure.suite("verify")
 @allure.sub_suite("urlscan.io")
 class Tests:
 
@@ -35,7 +40,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
@@ -45,6 +50,7 @@ class Tests:
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @pytest.mark.skipif(getenv('URLSCAN_API_KEY', None) is  None, reason="URLSCAN_API_KEY env variable must be set")
+    @pytest.mark.flaky(reruns=URLSCAN_RERUNS_MAX, reruns_delay=1)
     @allure.description_html("""
     <h5>Test endpoint "/verify/by_urlscan"</h5>
 
@@ -53,6 +59,9 @@ class Tests:
     <h4> Skip if env. variable not set</h2>
     """)
     def test_verify_by_urlscan_malicious(self, client_with_db):
+        if int(environ['COUNT_FAILED']) > (URLSCAN_RERUNS_MAX-1):
+            pytest.skip("urlscan.io cannot finish properly")
+        environ['COUNT_FAILED'] = str( int(environ['COUNT_FAILED']) + 1 )
         client = client_with_db[0]
         endpoint = '/verify/by_urlscan'
         malicious_url = get_test_phishing_domain()
@@ -62,17 +71,17 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, malicious_url))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
-        if response.status_code == 202:
-            pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(malicious_url))
+        # if response.status_code == 202:
+        #     pytest.skip("urlscan.io returned status 202 - url \"{}\" is invalid".format(malicious_url))
         j = data_to_json(response.data)
         field = "status"
         expected_value = "malicious"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        if j[field] == "good":
-            pytest.skip("urlscan.io returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
+        # if j[field] == "good":
+        #     pytest.skip("urlscan.io returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
@@ -89,7 +98,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")

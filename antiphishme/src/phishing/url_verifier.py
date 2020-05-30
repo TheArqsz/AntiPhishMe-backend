@@ -74,7 +74,8 @@ def verify_levenstein(domain):
 
     """
     good_keywords = [k['good_keyword'] for k in Goodies.get_all_goodies()]
-    domain_phrases = domain.split('.')
+    # Transform example.com.pl to ['example', 'com']
+    domain_phrases = domain.split('.')[:-1]
     verdict, _, _, _ = levenstein_check(good_keywords, domain_phrases)
     return verdict
 

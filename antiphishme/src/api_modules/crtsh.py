@@ -17,7 +17,7 @@ def _search_domain(domain):
     except json.JSONDecodeError as err:
         log.error(err)
         return None
-        
+
     if not certs:
         return None
     else:
@@ -54,5 +54,5 @@ def get_results(domain):
     d['subject']['org_name'] = cert['subject'].get('organizationName', 'Unknown')
     d['subject']['country'] = cert['subject'].get('countryName', 'Unknown')
     d['issuer']['common_name'] = cert['issuer'].get('commonName', 'Unknown')
-    d['multi_dns_amount'] = len(cert.get('extensions', [1]).get('alternative_names', [1]))
+    d['multi_dns_amount'] = len(cert.get('extensions', dict()).get('alternative_names', [1]))
     return d

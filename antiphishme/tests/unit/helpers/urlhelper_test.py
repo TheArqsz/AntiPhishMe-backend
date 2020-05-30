@@ -12,6 +12,7 @@ from antiphishme.src.helpers import url_helper
 
 @allure.epic("helpers")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("helpers")
 @allure.sub_suite("urlhelper")
 class Tests:

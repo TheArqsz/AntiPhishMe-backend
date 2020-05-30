@@ -1,10 +1,12 @@
 import pytest
 import allure
 import random
+import requests
 from hamcrest import * 
 from antiphishme.src.config import logging as log
 from json import loads, JSONDecodeError
 from pycerthole import CertHole
+from time import sleep as wait
 
 def data_to_json(data):
     __tracebackhide__ = True
@@ -168,4 +170,30 @@ def get_test_phishing_domain():
     __tracebackhide__ = True
     ch = CertHole()
     l = ch.get_data('txt')
-    return (random.choice(l)).domain_address
+    wait(2)
+    tries = 0
+    while tries < 200:
+        try:
+            c = random.choice(l)
+        except TypeError as err:
+            log.error(err)
+            tries += 1
+            continue
+
+        domain = c.domain_address
+        if not "http://" in domain and not "https://" in domain:
+            domain = "http://{}".format(domain)
+        try:
+            status = (requests.get(domain)).status_code
+        except requests.exceptions.ConnectionError as err:
+            log.error(err)
+            tries += 1
+            l = l.remove(c)
+            continue
+
+        if status in list([i for i in range(400, 500)] + [200]):
+            return domain
+        else:
+            tries += 1
+            l = l.remove(c)
+            continue

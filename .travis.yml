@@ -3,21 +3,32 @@ cache:
     directories:
         - $HOME/.cache/pip
 python:
-  - "3.8"
+    - "3.8"
+services:
+    - docker
 
 branches:
     only:
         - develop
         - master
 
+before_install:
+    - export LOCAL_DOCKER_IMAGE=antiphishme
+    - export LOCAL_DOCKER_SERVER="127.0.0.1:5000"
+
 install:
-  - pip install -r requirements.txt
-  - pip install codecov
-script: pytest --cov=./antiphishme/src/ --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
+    - pip install -r requirements.txt
+    - pip install codecov
+    - docker build . -t $LOCAL_DOCKER_IMAGE:latest
+    - docker run -d -p $LOCAL_DOCKER_SERVER:5000 -e ENV=docker_dev -e HOST="0.0.0.0" --name $LOCAL_DOCKER_IMAGE $LOCAL_DOCKER_IMAGE
+script: 
+    - pytest --allure-stories Unit,Functional --cov=./antiphishme/src/ --reruns 5 --reruns-delay 1 --alluredir ./antiphishme/tests/results --clean-alluredir --disable-pytest-warnings --cache-clear ./antiphishme/tests/
+    - sh scripts/docker_image_test.sh
 
 after_success:
     - sh scripts/codecov.sh
     - sh scripts/merge_branches.sh
+    - sh scripts/push_docker_image.sh
 
 after_script:
     - sh scripts/upload_allure_results.sh

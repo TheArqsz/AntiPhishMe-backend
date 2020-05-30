@@ -15,9 +15,10 @@ from antiphishme.tests.test_helpers import (
 
 from os import getenv
 
-@allure.epic("Verify")
+@allure.epic("verify")
 @allure.parent_suite("Functional")
-@allure.suite("Verify")
+@allure.story('Functional')
+@allure.suite("verify")
 @allure.sub_suite("who.is")
 class Tests:
 
@@ -35,7 +36,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'google.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
@@ -43,7 +44,8 @@ class Tests:
         expected_value = "good"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
-
+    
+    @pytest.mark.flaky(reruns=20, reruns_delay=2)
     @allure.description_html("""
     <h5>Test endpoint "/verify/by_whois"</h5>
 
@@ -69,8 +71,8 @@ class Tests:
         field = "status"
         expected_value = "malicious"
         assert_dict_contains_key(j, field, "Check if dict contains given key - \"{}\"".format(field))
-        if j[field] == "good":
-            pytest.skip("who.is returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
+        # if j[field] == "good":
+        #     pytest.skip("who.is returned malicious domain as good - url \"{}\" is invalid".format(malicious_url))
         assert_equal(j[field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
 
     @allure.description("""
@@ -87,7 +89,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with URL: {}".format(endpoint, 'example.com'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")

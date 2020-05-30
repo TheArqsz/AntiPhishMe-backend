@@ -11,9 +11,10 @@ from antiphishme.tests.test_helpers import (
     assert_dict_contains_key
 )
 
-@allure.epic("Details")
+@allure.epic("details")
 @allure.parent_suite("Functional")
-@allure.suite("Details")
+@allure.story('Functional')
+@allure.suite("details")
 @allure.sub_suite("IP")
 class Tests:
 
@@ -32,7 +33,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with IP: {}".format(endpoint, ip))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         assert_equal(response.status_code, 200, "Check status code")
         j = data_to_json(response.data)
@@ -62,7 +63,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with IP: {}".format(endpoint, '1.1.1.1'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")
@@ -89,7 +90,7 @@ class Tests:
         headers = {
             'Content-Type': "application/json"
         }
-        info("POST {}".format(endpoint))
+        info("POST {} with IP: {}".format(endpoint, '721.0.0.1'))
         response = client.post(BASE_PATH + endpoint, data=json.dumps(data), headers=headers)
         j = data_to_json(response.data)
         assert_equal(response.status_code, 400, "Check status code")

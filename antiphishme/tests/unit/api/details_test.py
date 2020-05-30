@@ -30,6 +30,7 @@ from flask import Response
 
 @allure.epic("api")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("api")
 @allure.sub_suite("details")
 class Tests:

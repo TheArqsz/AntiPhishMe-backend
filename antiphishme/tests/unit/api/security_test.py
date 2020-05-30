@@ -19,6 +19,7 @@ from werkzeug.exceptions import Unauthorized
 
 @allure.epic("api")
 @allure.parent_suite("Unit tests")
+@allure.story('Unit')
 @allure.suite("api")
 @allure.sub_suite("security")
 class Tests:
