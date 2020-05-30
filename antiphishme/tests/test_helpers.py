@@ -178,7 +178,6 @@ def get_test_phishing_domain():
     while tries < 200:
         try:
             c = random.choice(l)
-            wait(2)
         except TypeError as err:
             log.error(err)
             tries += 1
@@ -188,7 +187,7 @@ def get_test_phishing_domain():
             domain = "http://{}".format(domain)
         try:
             status = (requests.get(domain)).status_code
-            wait(2)
+            wait(1)
         except requests.exceptions.ConnectionError as err:
             log.error(err)
             tries += 1
