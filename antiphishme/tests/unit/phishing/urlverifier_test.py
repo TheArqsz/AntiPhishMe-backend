@@ -10,6 +10,8 @@ from antiphishme.tests.test_helpers import (
 
 from antiphishme.src.phishing import url_verifier as uv
 
+from antiphishme.src.helpers.consts import Const
+
 from antiphishme.src.models import (
     goodies_model,
     baddies_model,
@@ -28,7 +30,7 @@ class Tests:
     Test url_verifier phishing module
 
     Test verify_domain_in_baddies
-    Expect malicious.
+    Expect True.
     """)
     @mock.patch.object(baddies_model.Baddies, 'get_all_baddies')
     def test_verify_domain_in_baddies_exists(self, mock_get_all_baddies):
@@ -55,7 +57,7 @@ class Tests:
     Test url_verifier phishing module
 
     Test verify_domain_in_baddies
-    Expect good.
+    Expect False.
     """)
     @mock.patch.object(baddies_model.Baddies, 'get_all_baddies')
     def test_verify_domain_in_baddies_not_exists(self, mock_get_all_baddies):
@@ -77,3 +79,33 @@ class Tests:
         result = uv.verify_domain_in_baddies(test_domain)
         assert_type(result, bool, "Check if returned result is of correct type")
         assert_equal(result, False, "Check if method returned correct verdict")
+
+    @allure.description("""
+    Test url_verifier phishing module
+
+    Test verify_entropy
+    Expect True.
+    """)
+    def test_verify_entropy_good(self):
+
+        malicious_url = "abc"
+        info("Requested URL: {}".format(malicious_url))
+
+        result = uv.verify_entropy('test_domain')
+        assert_type(result, bool, "Check if returned result is of correct type")
+        assert_equal(result, False, "Check if method returned correct verdict")
+
+    @allure.description("""
+    Test url_verifier phishing module
+
+    Test verify_entropy
+    Expect True.
+    """)
+    def test_verify_entropy_malicious(self):
+
+        malicious_url = "abcdefghijklmnoprstukv/!$#%^#$#@"
+        info("Requested URL: {}".format(malicious_url))
+
+        result = uv.verify_entropy(malicious_url)
+        assert_type(result, bool, "Check if returned result is of correct type")
+        assert_equal(result, True, "Check if method returned correct verdict")
