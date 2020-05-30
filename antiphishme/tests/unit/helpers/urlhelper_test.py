@@ -89,7 +89,7 @@ class Tests:
     Given: domain without query
     Expect properly modified url.
     """)
-    def test_url_to_domain_schema_with_query(self):
+    def test_url_to_domain_schema_without_query(self):
 
         test_url = "example.com"
         expected_url = "example.com"
