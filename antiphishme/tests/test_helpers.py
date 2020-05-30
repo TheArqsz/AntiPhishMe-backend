@@ -1,6 +1,7 @@
 import pytest
 import allure
 import random
+import urllib
 from hamcrest import * 
 from antiphishme.src.config import logging as log
 from json import loads, JSONDecodeError
@@ -168,4 +169,16 @@ def get_test_phishing_domain():
     __tracebackhide__ = True
     ch = CertHole()
     l = ch.get_data('txt')
-    return (random.choice(l)).domain_address
+    tries = 0
+    while tries < 200:
+        c = random.choice(l)
+        domain = c.domain_address
+        if not "http://" in domain and not "https://" in domain:
+            domain = "http://{}".format(domain)
+        status = urllib.request.urlopen(domain).getcode()
+        if status == 200:
+            return domain
+        else:
+            tries += 1
+            l = l.remove(c)
+            continue
