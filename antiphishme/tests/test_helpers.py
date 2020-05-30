@@ -175,7 +175,14 @@ def get_test_phishing_domain():
         domain = c.domain_address
         if not "http://" in domain and not "https://" in domain:
             domain = "http://{}".format(domain)
-        status = (requests.get(domain)).status_code
+        try:
+            status = (requests.get(domain)).status_code
+        except requests.exceptions.ConnectionError as err:
+            log.error(err)
+            tries += 1
+            l = l.remove(c)
+            continue
+        
         if status == 200:
             return domain
         else:
