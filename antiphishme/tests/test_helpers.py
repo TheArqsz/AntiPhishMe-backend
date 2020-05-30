@@ -171,17 +171,9 @@ def get_test_phishing_domain():
     ch = CertHole()
     l = None
     tries = 0
-    while not l and tries < 20:
-        l = ch.get_data(random.choice(['txt', 'json', 'xml', 'csv']))
-        if l:
-            log.info("Collected list of domains from certhole: {}".format(l[:4]))
-            wait(3)
-            break
-        else:
-            tries += 1
-            log.info("Cannot collect data - retrying in 3 sec.")
-            wait(3)
-            continue
+    l = ch.get_data(random.choice(['txt', 'xml']))
+    log.info("Collected list of domains from certhole: {}".format(l[:4]))
+    wait(3)
     tries = 0
     while tries < 200:
         try:
@@ -200,11 +192,11 @@ def get_test_phishing_domain():
         except requests.exceptions.ConnectionError as err:
             log.error(err)
             tries += 1
-            l = l.remove(c)
+            l.remove(c)
             continue
         if status in list([i for i in range(400, 500)] + [200]):
             return domain
         else:
             tries += 1
-            l = l.remove(c)
+            l.remove(c)
             continue
