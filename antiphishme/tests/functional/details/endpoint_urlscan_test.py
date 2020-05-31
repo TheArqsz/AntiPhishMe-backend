@@ -97,7 +97,7 @@ class Tests:
         environ['COUNT_FAILED'] = str( int(environ['COUNT_FAILED']) + 1 )
         client = client_with_db[0]
         endpoint = '/details/urlscan'
-        url = get_test_phishing_domain()
+        url = get_test_phishing_domain().strip('http://')
         info("URL sent - {}".format(url))
         data = {
             'url': "{}".format(url)
