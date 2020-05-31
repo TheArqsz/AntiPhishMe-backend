@@ -50,7 +50,7 @@ class Tests:
         field = "domain"
         expected_value = url
         assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
-        assert_equal(j['details'][field].strip('http://'), expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
+        assert_equal(j['details'][field], expected_value, "Check if item \"{}\" is equal to \"{}\"".format(field, expected_value))
         field = 'ip'
         assert_dict_contains_key(j['details'], field, "Check if dict contains given key - \"{}\"".format(field))
         field = 'country'
@@ -97,7 +97,7 @@ class Tests:
         environ['COUNT_FAILED'] = str( int(environ['COUNT_FAILED']) + 1 )
         client = client_with_db[0]
         endpoint = '/details/urlscan'
-        url = get_test_phishing_domain()
+        url = get_test_phishing_domain().strip('http://')
         info("URL sent - {}".format(url))
         data = {
             'url': "{}".format(url)

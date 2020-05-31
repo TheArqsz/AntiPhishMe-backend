@@ -20,6 +20,8 @@ from antiphishme.tests.test_helpers import (
     assert_dict_contains_key
 )
 
+from os import environ
+
 @allure.step("Set up Flask client with db")
 @pytest.fixture(scope="module")
 def client_with_db():
@@ -30,7 +32,7 @@ def client_with_db():
     flask_app.app.json_encoder = json.JSONEncoder
     flask_app.add_api('swagger.yml', base_path=BASE_PATH, arguments=arguments)
     db = SQLAlchemy(flask_app.app)
-
+    environ['COUNT_FAILED'] = '1'
     with flask_app.app.test_client() as c:
         setup_endpoint = '/server/create_db'
         headers = {
