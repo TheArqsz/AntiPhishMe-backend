@@ -187,13 +187,13 @@ def get_test_phishing_domain():
             domain = "http://{}".format(domain)
         try:
             status = (requests.get(domain)).status_code
-            wait(1)
+            wait(0.3)
         except requests.exceptions.ConnectionError as err:
             log.error(err)
             tries += 1
             l.remove(c)
             continue
-        if status in list([i for i in range(400, 500)] + [200]):
+        if status in list([i for i in range(200, 400)]):
             return domain
         else:
             tries += 1
