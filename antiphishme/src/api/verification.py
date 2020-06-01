@@ -17,7 +17,7 @@ def verify_by_all(url_body):
 
     verdict = verify_all(url_body.get('url'))
     response_text = { 
-        "result": f"{verdict}" 
+        "status": f"{verdict}" 
     }
     return Response(json.dumps(response_text), 200, mimetype="application/json")
     
