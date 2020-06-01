@@ -34,7 +34,7 @@ def verify_by_cert_hole(url_body):
         verdict = PhishLevel.GOOD.get('status')
         
     response_text = { 
-        "result": f"{verdict}" 
+        "status": f"{verdict}" 
     }
     return Response(json.dumps(response_text), 200, mimetype="application/json") 
 
