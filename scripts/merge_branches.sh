@@ -22,7 +22,6 @@ cd "$repo_temp"
 
 echo "Checking out $TRAVIS_BRANCH"
 git checkout $TRAVIS_BRANCH && \
-git pull && \ 
 git merge -s ours origin/$GIT_BRANCH_TO 
 
 echo "Checking out $GIT_BRANCH_TO"
