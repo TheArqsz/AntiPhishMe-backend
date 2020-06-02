@@ -25,7 +25,7 @@ class Tests:
         client = client_with_db[0]
         endpoint = '/verify/all'
         data = {
-            'url': 'example.com'
+            'url': 'google.com'
         }
         headers = {
             'Content-Type': "application/json"
