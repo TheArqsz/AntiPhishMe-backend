@@ -1,6 +1,7 @@
 import json
 
 from pycrtsh import Crtsh
+from pycrtsh.api import CrtshCertificateNotFound
 from antiphishme.src.helpers.url_helper import url_to_domain
 from antiphishme.src.config import logging as log
 
@@ -32,7 +33,7 @@ def _get_details(crt_id):
     c = Crtsh()
     try:
         return c.get(crt_id)
-    except IndexError as err:
+    except (IndexError, CrtshCertificateNotFound) as err:
         log.error(err)
         return {
             'subject': dict(),
