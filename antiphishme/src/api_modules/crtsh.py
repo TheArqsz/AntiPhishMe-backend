@@ -1,6 +1,7 @@
 import json
 
-from pycrtsh import Crtsh, CrtshCertificateNotFound
+from pycrtsh import Crtsh
+from pycrtsh.api import CrtshCertificateNotFound
 from antiphishme.src.helpers.url_helper import url_to_domain
 from antiphishme.src.config import logging as log
 
